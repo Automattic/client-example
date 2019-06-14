@@ -1,0 +1,22 @@
+{
+    "name": "automattic/client-example",
+    "description": "An example plugin that uses Jetpack's connection package in order to estconnection tunnel.",
+    "type": "package",
+    "license": "GPL-2.0-or-later",
+    "authors": [
+        {
+            "name": "Automattic, Inc.",
+            "email": "support@jetpack.com"
+        }
+    ],
+	"repositories": [
+		{
+			"type": "path",
+			"url": "../jetpack/packages/*"
+		}
+	],
+    "minimum-stability": "dev",
+    "require": {
+        "automattic/jetpack-connection": "@dev"
+    }
+}
