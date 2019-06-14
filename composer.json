@@ -12,11 +12,15 @@
 	"repositories": [
 		{
 			"type": "path",
-			"url": "../jetpack/packages/*"
+			"url": "../jetpack/packages/*",
+            "options": {
+                "symlink": false
+            }
 		}
 	],
     "minimum-stability": "dev",
     "require": {
-        "automattic/jetpack-connection": "@dev"
+        "automattic/jetpack-connection": "@dev",
+        "automattic/jetpack-tracking": "@dev"
     }
 }

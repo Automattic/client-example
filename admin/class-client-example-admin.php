@@ -1,5 +1,7 @@
 <?php
 
+use Automattic\Jetpack\Connection\Manager;
+
 /**
  * The admin-specific functionality of the plugin.
  *
@@ -52,6 +54,29 @@ class Client_Example_Admin {
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
 
+		add_action( 'admin_menu', array( $this, 'admin_menu' ) );
+
+		add_filter( 'jetpack_connection_secret_generator', function( $callable ) {
+			return function() {
+				return wp_generate_password( 32, false );
+			};
+		} );
+	}
+
+	/**
+	 * Runs the function that generates the admin menu for the plugin.
+	 *
+	 */
+	public function admin_menu() {
+		add_menu_page(
+			'Client Example',
+			'Client Example',
+			'manage_options',
+			'client-example',
+			array( $this, 'generate_menu' ),
+			'',
+			4
+		);
 	}
 
 	/**
@@ -98,6 +123,15 @@ class Client_Example_Admin {
 
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/client-example-admin.js', array( 'jquery' ), $this->version, false );
 
+	}
+
+	/**
+	 * Generate the admin menu page.
+	 */
+	public function generate_menu() {
+		$manager = new Manager();
+		$manager->register();
+		require plugin_dir_path( __FILE__ ) . '/partials/client-example-admin-display.php';
 	}
 
 }

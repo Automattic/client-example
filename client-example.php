@@ -37,6 +37,8 @@ if ( ! defined( 'WPINC' ) ) {
  */
 define( 'CLIENT_EXAMPLE_VERSION', '1.0.0' );
 
+require_once dirname( __FILE__ ) . '/vendor/autoload.php';
+
 /**
  * The code that runs during plugin activation.
  * This action is documented in includes/class-client-example-activator.php

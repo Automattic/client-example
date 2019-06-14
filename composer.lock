@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5f8f08d114e6436e73e9f755450afaa9",
+    "content-hash": "03eba58d04a499f2f98b751513e4f04d",
     "packages": [
         {
             "name": "automattic/jetpack-connection",
@@ -12,7 +12,7 @@
             "dist": {
                 "type": "path",
                 "url": "../jetpack/packages/connection",
-                "reference": "0a0e293d73c17d59376590d56e5667b169d26877"
+                "reference": "38e6f5458ed6df52514aafcb3760e4716beea5db"
             },
             "require": {
                 "automattic/jetpack-constants": "@dev",
@@ -40,7 +40,10 @@
             "license": [
                 "GPL-2.0-or-later"
             ],
-            "description": "Everything needed to connect to the Jetpack infrastructure"
+            "description": "Everything needed to connect to the Jetpack infrastructure",
+            "transport-options": {
+                "symlink": false
+            }
         },
         {
             "name": "automattic/jetpack-constants",
@@ -48,7 +51,7 @@
             "dist": {
                 "type": "path",
                 "url": "../jetpack/packages/constants",
-                "reference": "a6ab6360f4b48962ec7d62b06b39d1470b1dbe95"
+                "reference": "5a262dd5c59892dca9701efeeabc27a599130179"
             },
             "require-dev": {
                 "phpunit/phpunit": "^5.7 || ^6.5 || ^7.5"
@@ -68,7 +71,10 @@
             "license": [
                 "GPL-2.0-or-later"
             ],
-            "description": "A wrapper for defining constants in a more testable way."
+            "description": "A wrapper for defining constants in a more testable way.",
+            "transport-options": {
+                "symlink": false
+            }
         },
         {
             "name": "automattic/jetpack-options",
@@ -76,7 +82,7 @@
             "dist": {
                 "type": "path",
                 "url": "../jetpack/packages/options",
-                "reference": "78220bf7d3c1a3a5ed4edb77462e84982b3c408f"
+                "reference": "26627ba39e991f22e003e40c2589b137bd5e4540"
             },
             "require": {
                 "automattic/jetpack-constants": "@dev"
@@ -94,14 +100,56 @@
             "license": [
                 "GPL-2.0-or-later"
             ],
-            "description": "A wrapper for wp-options to manage specific Jetpack options."
+            "description": "A wrapper for wp-options to manage specific Jetpack options.",
+            "transport-options": {
+                "symlink": false
+            }
+        },
+        {
+            "name": "automattic/jetpack-tracking",
+            "version": "dev-add/user-authentication",
+            "dist": {
+                "type": "path",
+                "url": "../jetpack/packages/tracking",
+                "reference": "ff59d7aa62528912f087ecb7835725c34b2e53e2"
+            },
+            "require": {
+                "automattic/jetpack-options": "@dev"
+            },
+            "require-dev": {
+                "php-mock/php-mock": "^2.1",
+                "phpunit/phpunit": "^5.7 || ^6.5 || ^7.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Automattic\\Jetpack\\": "src/"
+                },
+                "classmap": [
+                    "legacy"
+                ]
+            },
+            "scripts": {
+                "phpunit": [
+                    "@composer install",
+                    "./vendor/phpunit/phpunit/phpunit --colors=always"
+                ]
+            },
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "description": "Tracking for Jetpack",
+            "transport-options": {
+                "symlink": false
+            }
         }
     ],
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "automattic/jetpack-connection": 20
+        "automattic/jetpack-connection": 20,
+        "automattic/jetpack-tracking": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
