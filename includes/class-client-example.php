@@ -58,6 +58,15 @@ class Client_Example {
 	protected $version;
 
 	/**
+	 * The Jetpack connection manager object.
+	 *
+	 * @since    1.0.0
+	 * @access   protected
+	 * @var      Automattic\Jetpack\Connection\Manager $manager The current version of the plugin.
+	 */
+	protected $manager;
+
+	/**
 	 * Define the core functionality of the plugin.
 	 *
 	 * Set the plugin name and the plugin version that can be used throughout the plugin.
@@ -65,8 +74,9 @@ class Client_Example {
 	 * the public-facing side of the site.
 	 *
 	 * @since    1.0.0
+	 * @param Automattic\Jetpack\Connection\Manager $manager the connection manager.
 	 */
-	public function __construct() {
+	public function __construct( $manager ) {
 		if ( defined( 'CLIENT_EXAMPLE_VERSION' ) ) {
 			$this->version = CLIENT_EXAMPLE_VERSION;
 		} else {
@@ -74,11 +84,12 @@ class Client_Example {
 		}
 		$this->plugin_name = 'client-example';
 
+		$this->manager = $manager;
+
 		$this->load_dependencies();
 		$this->set_locale();
 		$this->define_admin_hooks();
 		$this->define_public_hooks();
-
 	}
 
 	/**
@@ -152,7 +163,11 @@ class Client_Example {
 	 */
 	private function define_admin_hooks() {
 
-		$plugin_admin = new Client_Example_Admin( $this->get_plugin_name(), $this->get_version() );
+		$plugin_admin = new Client_Example_Admin(
+			$this->get_plugin_name(),
+			$this->get_version(),
+			$this->manager
+		);
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );

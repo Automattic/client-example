@@ -1,5 +1,7 @@
 <?php
 
+use Automattic\Jetpack\Connection\Manager;
+
 /**
  * The plugin bootstrap file
  *
@@ -77,8 +79,10 @@ require plugin_dir_path( __FILE__ ) . 'includes/class-client-example.php';
  */
 function run_client_example() {
 
-	$plugin = new Client_Example();
-	$plugin->run();
+	$jetpack_connection_manager = new Manager();
+	$jetpack_connection_manager->init();
+	$plugin = new Client_Example( $jetpack_connection_manager );
 
+	$plugin->run();
 }
 run_client_example();

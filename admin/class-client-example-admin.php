@@ -1,7 +1,5 @@
 <?php
 
-use Automattic\Jetpack\Connection\Manager;
-
 /**
  * The admin-specific functionality of the plugin.
  *
@@ -48,11 +46,13 @@ class Client_Example_Admin {
 	 * @since    1.0.0
 	 * @param      string    $plugin_name       The name of this plugin.
 	 * @param      string    $version    The version of this plugin.
+	 * @param      Automattic\Jetpack\Connection\Manager $manager The connection manager object.
 	 */
-	public function __construct( $plugin_name, $version ) {
+	public function __construct( $plugin_name, $version, $manager ) {
 
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
+		$this->manager = $manager;
 
 		add_action( 'admin_menu', array( $this, 'admin_menu' ) );
 
@@ -129,8 +129,8 @@ class Client_Example_Admin {
 	 * Generate the admin menu page.
 	 */
 	public function generate_menu() {
-		$manager = new Manager();
-		$manager->register();
+		error_log( print_r( $this->manager->register(), true ) );
+
 		require plugin_dir_path( __FILE__ ) . '/partials/client-example-admin-display.php';
 	}
 
