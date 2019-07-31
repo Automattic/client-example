@@ -55,6 +55,7 @@ class Client_Example_Admin {
 		$this->manager = $manager;
 
 		add_action( 'admin_menu', array( $this, 'admin_menu' ) );
+		add_action( 'admin_post_register_site', array( $this, 'register_site' ) );
 
 		add_filter( 'jetpack_connection_secret_generator', function( $callable ) {
 			return function() {
@@ -129,9 +130,20 @@ class Client_Example_Admin {
 	 * Generate the admin menu page.
 	 */
 	public function generate_menu() {
-		error_log( print_r( $this->manager->register(), true ) );
-
 		require plugin_dir_path( __FILE__ ) . '/partials/client-example-admin-display.php';
 	}
 
+	/**
+	 * Registers the site using the connection package.
+	 */
+	public function register_site() {
+		check_admin_referer( 'register-site' );
+		$this->manager->register();
+
+		if ( wp_get_referer() ) {
+			wp_safe_redirect( wp_get_referer() );
+		} else {
+			wp_safe_redirect( get_home_url() );
+		}
+	}
 }

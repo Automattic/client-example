@@ -9,15 +9,15 @@
             "email": "support@jetpack.com"
         }
     ],
-	"repositories": [
-		{
-			"type": "path",
-			"url": "../jetpack/packages/*",
+    "repositories": [
+        {
+            "type": "path",
+            "url": "../jetpack/packages/*",
             "options": {
                 "symlink": false
             }
-		}
-	],
+        }
+    ],
     "minimum-stability": "dev",
     "require": {
         "automattic/jetpack-connection": "@dev",
