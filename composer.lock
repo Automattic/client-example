@@ -4,15 +4,21 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "03eba58d04a499f2f98b751513e4f04d",
+    "content-hash": "17443a9c3d52bd76fc11c385b42ac7d8",
     "packages": [
         {
             "name": "automattic/jetpack-connection",
-            "version": "dev-add/user-authentication",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Automattic/jetpack-connection.git",
+                "reference": "ed0647c0ba4a7c9aba0c82cf0abbfb58bff51e06"
+            },
             "dist": {
-                "type": "path",
-                "url": "../jetpack/packages/connection",
-                "reference": "38e6f5458ed6df52514aafcb3760e4716beea5db"
+                "type": "zip",
+                "url": "https://api.github.com/repos/Automattic/jetpack-connection/zipball/ed0647c0ba4a7c9aba0c82cf0abbfb58bff51e06",
+                "reference": "ed0647c0ba4a7c9aba0c82cf0abbfb58bff51e06",
+                "shasum": ""
             },
             "require": {
                 "automattic/jetpack-constants": "@dev",
@@ -27,31 +33,33 @@
                 "psr-4": {
                     "Automattic\\Jetpack\\Connection\\": "src"
                 },
+                "files": [
+                    "legacy/load-ixr.php"
+                ],
                 "classmap": [
                     "legacy"
                 ]
             },
-            "scripts": {
-                "phpunit": [
-                    "@composer install",
-                    "./vendor/phpunit/phpunit/phpunit --colors=always"
-                ]
-            },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "GPL-2.0-or-later"
             ],
             "description": "Everything needed to connect to the Jetpack infrastructure",
-            "transport-options": {
-                "symlink": false
-            }
+            "time": "2019-09-30T21:57:27+00:00"
         },
         {
             "name": "automattic/jetpack-constants",
-            "version": "dev-add/user-authentication",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Automattic/jetpack-constants.git",
+                "reference": "5a83f0a1f2b7fce5160d2ff148b0e7555f30a48f"
+            },
             "dist": {
-                "type": "path",
-                "url": "../jetpack/packages/constants",
-                "reference": "5a262dd5c59892dca9701efeeabc27a599130179"
+                "type": "zip",
+                "url": "https://api.github.com/repos/Automattic/jetpack-constants/zipball/5a83f0a1f2b7fce5160d2ff148b0e7555f30a48f",
+                "reference": "5a83f0a1f2b7fce5160d2ff148b0e7555f30a48f",
+                "shasum": ""
             },
             "require-dev": {
                 "phpunit/phpunit": "^5.7 || ^6.5 || ^7.5"
@@ -62,27 +70,26 @@
                     "Automattic\\Jetpack\\": "src/"
                 }
             },
-            "scripts": {
-                "phpunit": [
-                    "@composer install",
-                    "./vendor/phpunit/phpunit/phpunit --colors=always"
-                ]
-            },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "GPL-2.0-or-later"
             ],
             "description": "A wrapper for defining constants in a more testable way.",
-            "transport-options": {
-                "symlink": false
-            }
+            "time": "2019-09-16T22:34:52+00:00"
         },
         {
             "name": "automattic/jetpack-options",
-            "version": "dev-add/user-authentication",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Automattic/jetpack-options.git",
+                "reference": "54f17b3b2f3bd5b5c96989b69115fa8ec1675fde"
+            },
             "dist": {
-                "type": "path",
-                "url": "../jetpack/packages/options",
-                "reference": "26627ba39e991f22e003e40c2589b137bd5e4540"
+                "type": "zip",
+                "url": "https://api.github.com/repos/Automattic/jetpack-options/zipball/54f17b3b2f3bd5b5c96989b69115fa8ec1675fde",
+                "reference": "54f17b3b2f3bd5b5c96989b69115fa8ec1675fde",
+                "shasum": ""
             },
             "require": {
                 "automattic/jetpack-constants": "@dev"
@@ -97,59 +104,19 @@
                     "legacy"
                 ]
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "GPL-2.0-or-later"
             ],
             "description": "A wrapper for wp-options to manage specific Jetpack options.",
-            "transport-options": {
-                "symlink": false
-            }
-        },
-        {
-            "name": "automattic/jetpack-tracking",
-            "version": "dev-add/user-authentication",
-            "dist": {
-                "type": "path",
-                "url": "../jetpack/packages/tracking",
-                "reference": "ff59d7aa62528912f087ecb7835725c34b2e53e2"
-            },
-            "require": {
-                "automattic/jetpack-options": "@dev"
-            },
-            "require-dev": {
-                "php-mock/php-mock": "^2.1",
-                "phpunit/phpunit": "^5.7 || ^6.5 || ^7.5"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Automattic\\Jetpack\\": "src/"
-                },
-                "classmap": [
-                    "legacy"
-                ]
-            },
-            "scripts": {
-                "phpunit": [
-                    "@composer install",
-                    "./vendor/phpunit/phpunit/phpunit --colors=always"
-                ]
-            },
-            "license": [
-                "GPL-2.0-or-later"
-            ],
-            "description": "Tracking for Jetpack",
-            "transport-options": {
-                "symlink": false
-            }
+            "time": "2019-08-27T08:13:29+00:00"
         }
     ],
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "automattic/jetpack-connection": 20,
-        "automattic/jetpack-tracking": 20
+        "automattic/jetpack-connection": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
