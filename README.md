@@ -10,11 +10,23 @@ The first thing that the plugin must do is [initialize the Connection Manager ob
 
 ## Admin area
 
-Initalization adds a `Client Example` dashboard item with a control pag displaying the main button and some debugging information. It's a very simple [administration page](https://github.com/Automattic/client-example/blob/master/admin/partials/client-example-admin-display.php) with several sections. The main `Register` button runs a register request that is handled by the controllers described below.
+Initalization adds a `Client Example` dashboard item with a control page displaying the main button and some debugging information. It's a very simple [administration page](https://github.com/Automattic/client-example/blob/master/admin/partials/client-example-admin-display.php) with several sections.
+
+### Site registration
+
+The main `Register` button runs a register request that is handled by the controllers described in technical sections below.
+
+### User disconnection
+
+The `Disconnect current user` button appears if you already are  connected to WordPress.com. Pressing this button will disconnect your currently logged in user. To test this procedure you can install Jetpack alongside this plugin on your test site and connect your user.
 
 ## Registration controller
 
 The [registration controller](https://github.com/Automattic/client-example/blob/master/admin/class-client-example-admin.php#L139) is a very basic WordPress action controller with a nonce check. All the heavy lifting is done by the Connection Manager.
+
+## User disconnect controller
+
+The same can be said about the disconnect controller - it's just handling a form submission and calling the `disconnect_user` method with the current user ID.
 
 ## Callback controller
 
