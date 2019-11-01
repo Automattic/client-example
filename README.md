@@ -26,7 +26,7 @@ The [registration controller](https://github.com/Automattic/client-example/blob/
 
 ## User disconnect controller
 
-The same can be said about the disconnect controller - it's just handling a form submission and calling the `disconnect_user` method with the current user ID.
+The same can be said about the disconnect controller - it's just handling a form submission and calling the `disconnect_user` method with the current user ID. Note that if you are the connection owner (AKA the only administrator connected to WordPress.com), you won't be able to disconnect, and the UI won't show you any error messages in this case.
 
 ## Callback controller
 
