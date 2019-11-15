@@ -35,6 +35,12 @@ $token = $this->manager->get_access_token( get_current_user_id() );
 	<?php wp_nonce_field( 'disconnect-user' ); ?>
 	<input type="submit" value="Disconnect current user">
 </form>
+<?php else: ?>
+<form action="/wp-admin/admin-post.php" method="post">
+	<input type="hidden" name="action" value="connect_user">
+	<?php wp_nonce_field( 'connect-user' ); ?>
+	<input type="submit" value="Connect current user">
+</form>
 <?php endif; ?>
 
 <h2>Current user token</h2>
