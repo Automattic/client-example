@@ -12,17 +12,18 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Automattic/jetpack-connection.git",
-                "reference": "dcd1defdd5172a005bd940a32515da918a0c1a43"
+                "reference": "73c314c949b0eca52f4dfec0d996bce6ac6e9006"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Automattic/jetpack-connection/zipball/dcd1defdd5172a005bd940a32515da918a0c1a43",
-                "reference": "dcd1defdd5172a005bd940a32515da918a0c1a43",
+                "url": "https://api.github.com/repos/Automattic/jetpack-connection/zipball/73c314c949b0eca52f4dfec0d996bce6ac6e9006",
+                "reference": "73c314c949b0eca52f4dfec0d996bce6ac6e9006",
                 "shasum": ""
             },
             "require": {
                 "automattic/jetpack-constants": "@dev",
-                "automattic/jetpack-options": "@dev"
+                "automattic/jetpack-options": "@dev",
+                "automattic/jetpack-roles": "@dev"
             },
             "require-dev": {
                 "php-mock/php-mock": "^2.1",
@@ -43,7 +44,7 @@
                 "GPL-2.0-or-later"
             ],
             "description": "Everything needed to connect to the Jetpack infrastructure",
-            "time": "2019-11-08T21:16:05+00:00"
+            "time": "2019-11-15T16:04:27+00:00"
         },
         {
             "name": "automattic/jetpack-constants",
@@ -110,6 +111,37 @@
             "time": "2019-11-08T21:16:05+00:00"
         },
         {
+            "name": "automattic/jetpack-roles",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Automattic/jetpack-roles.git",
+                "reference": "0cdcff4fdc489c79f20a361c084ec48e326ce483"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Automattic/jetpack-roles/zipball/0cdcff4fdc489c79f20a361c084ec48e326ce483",
+                "reference": "0cdcff4fdc489c79f20a361c084ec48e326ce483",
+                "shasum": ""
+            },
+            "require-dev": {
+                "php-mock/php-mock": "^2.1",
+                "phpunit/phpunit": "^5.7 || ^6.5 || ^7.5"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "description": "Utilities, related with user roles and capabilities.",
+            "time": "2019-11-08T21:16:05+00:00"
+        },
+        {
             "name": "automattic/jetpack-status",
             "version": "dev-master",
             "source": {
@@ -146,12 +178,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Automattic/jetpack-terms-of-service.git",
-                "reference": "a6361f6f0c285de1b4a0875f37c132d875df05a5"
+                "reference": "fcee8e9de7f37d36bd68ac1ebabdb15cf6e10952"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Automattic/jetpack-terms-of-service/zipball/a6361f6f0c285de1b4a0875f37c132d875df05a5",
-                "reference": "a6361f6f0c285de1b4a0875f37c132d875df05a5",
+                "url": "https://api.github.com/repos/Automattic/jetpack-terms-of-service/zipball/fcee8e9de7f37d36bd68ac1ebabdb15cf6e10952",
+                "reference": "fcee8e9de7f37d36bd68ac1ebabdb15cf6e10952",
                 "shasum": ""
             },
             "require": {
@@ -174,7 +206,7 @@
                 "GPL-2.0-or-later"
             ],
             "description": "Everything need to manage the terms of service state",
-            "time": "2019-11-08T21:16:05+00:00"
+            "time": "2019-11-15T16:03:27+00:00"
         },
         {
             "name": "automattic/jetpack-tracking",
