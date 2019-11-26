@@ -13,6 +13,7 @@
  */
 
 $token = $this->manager->get_access_token( get_current_user_id() );
+$blog_token = $this->manager->get_access_token();
 
 ?>
 
@@ -40,6 +41,14 @@ $token = $this->manager->get_access_token( get_current_user_id() );
 	<input type="hidden" name="action" value="connect_user">
 	<?php wp_nonce_field( 'connect-user' ); ?>
 	<input type="submit" value="Connect current user">
+</form>
+<?php endif;
+
+if ( $blog_token ) : ?>
+<form action="/wp-admin/admin-post.php" method="post">
+	<input type="hidden" name="action" value="disconnect_site">
+	<?php wp_nonce_field( 'disconnect-site' ); ?>
+	<input type="submit" value="Disconnect site">
 </form>
 <?php endif; ?>
 
