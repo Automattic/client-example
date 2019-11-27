@@ -39,7 +39,7 @@ if ( ! defined( 'WPINC' ) ) {
  */
 define( 'CLIENT_EXAMPLE_VERSION', '1.0.0' );
 
-require_once dirname( __FILE__ ) . '/vendor/autoload.php';
+require_once plugin_dir_path( __FILE__ ) . '/vendor/autoload_packages.php';
 
 /**
  * The code that runs during plugin activation.
