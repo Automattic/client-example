@@ -58,6 +58,7 @@ class Client_Example_Admin {
 		add_action( 'admin_post_register_site', array( $this, 'register_site' ) );
 		add_action( 'admin_post_connect_user', array( $this, 'connect_user' ) );
 		add_action( 'admin_post_disconnect_user', array( $this, 'disconnect_user' ) );
+		add_action( 'admin_post_disconnect_site', array( $this, 'disconnect_site' ) );
 
 		add_filter( 'jetpack_connection_secret_generator', function( $callable ) {
 			return function() {
@@ -169,6 +170,21 @@ class Client_Example_Admin {
 	public function disconnect_user() {
 		check_admin_referer( 'disconnect-user' );
 		$this->manager->disconnect_user( get_current_user_id() );
+
+		if ( wp_get_referer() ) {
+			wp_safe_redirect( wp_get_referer() );
+		} else {
+			wp_safe_redirect( get_home_url() );
+		}
+	}
+
+	/**
+	 * Disconnects the site.
+	 */
+	public function disconnect_site() {
+		check_admin_referer( 'disconnect-site' );
+		$this->manager->disconnect_site_wpcom();
+		$this->manager->delete_all_connection_tokens();
 
 		if ( wp_get_referer() ) {
 			wp_safe_redirect( wp_get_referer() );
