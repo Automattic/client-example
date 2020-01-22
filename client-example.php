@@ -1,5 +1,6 @@
 <?php
 
+use Automattic\Jetpack\Config;
 use Automattic\Jetpack\Connection\Manager;
 
 /**
@@ -79,10 +80,14 @@ require plugin_dir_path( __FILE__ ) . 'includes/class-client-example.php';
  */
 function run_client_example() {
 
+	// Here we enable the Jetpack packages.
+	$config = new Config();
+	$config->ensure( 'connection' );
+
 	$jetpack_connection_manager = new Manager();
-	$jetpack_connection_manager->init();
 	$plugin = new Client_Example( $jetpack_connection_manager );
 
 	$plugin->run();
 }
-run_client_example();
+
+add_action( 'plugins_loaded', 'run_client_example', 1 );

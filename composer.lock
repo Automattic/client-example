@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1dbebc67544bc765905729379e0656b0",
+    "content-hash": "053253d02ca265dcaa97377fc0a5b06a",
     "packages": [
         {
             "name": "automattic/jetpack-autoloader",
@@ -41,6 +41,33 @@
             ],
             "description": "Creates a custom autoloader for a plugin or theme.",
             "time": "2020-01-10T17:12:39+00:00"
+        },
+        {
+            "name": "automattic/jetpack-config",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Automattic/jetpack-config.git",
+                "reference": "20690256ad0560972c3130f283a6727efccdd04f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Automattic/jetpack-config/zipball/20690256ad0560972c3130f283a6727efccdd04f",
+                "reference": "20690256ad0560972c3130f283a6727efccdd04f",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "description": "Jetpack configuration package that initializes other packages and configures Jetpack's functionality. Can be used as a base for all variants of Jetpack package usage.",
+            "time": "2020-01-20T12:47:08+00:00"
         },
         {
             "name": "automattic/jetpack-connection",
@@ -288,7 +315,8 @@
     "stability-flags": {
         "automattic/jetpack-autoloader": 20,
         "automattic/jetpack-connection": 20,
-        "automattic/jetpack-tracking": 20
+        "automattic/jetpack-tracking": 20,
+        "automattic/jetpack-config": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
