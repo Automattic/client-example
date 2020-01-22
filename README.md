@@ -6,7 +6,7 @@ In order to use some functionality provided by WordPress.com and used by Jetpack
 
 ## Initialization
 
-The first thing that the plugin must do is [initialize the Connection Manager object](https://github.com/Automattic/client-example/blob/master/client-example.php#L82). This will set all necessary hooks in order for the rest of the parts to work properly.
+The first thing that the plugin must do is [initialize the Connection through the Jetpack Config package ](https://github.com/Automattic/client-example/blob/master/client-example.php#L82). This will set all necessary hooks in order for the rest of the parts to work properly. Notice how the starting point function is run at the `plugins_loaded` hook with priority 1. This is the standard procedure for using Jetpack Config - not too early to allow all plugins to load, but not too late to allow all plugins that need early initialization some space.
 
 ## Admin area
 
