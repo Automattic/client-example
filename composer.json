@@ -13,6 +13,7 @@
     "require": {
 		"automattic/jetpack-autoloader": "dev-master",
         "automattic/jetpack-connection": "dev-master",
-        "automattic/jetpack-tracking": "dev-master"
+        "automattic/jetpack-tracking": "dev-master",
+        "automattic/jetpack-config": "dev-master"
     }
 }
