@@ -2,7 +2,6 @@
 
 use Automattic\Jetpack\Config;
 use Automattic\Jetpack\Connection\Manager;
-use Automattic\Jetpack\JITM;
 
 /**
  * The plugin bootstrap file
@@ -87,7 +86,6 @@ function run_client_example() {
 //	$config->ensure( 'sync' );
 	if ( is_admin() ) {
 		$config->ensure( 'jitm' );
-		JITM::configure();
 	}
 
 	$jetpack_connection_manager = new Manager();
