@@ -9,8 +9,8 @@
  * @link       https://automattic.com
  * @since      1.0.0
  *
- * @package    Client_Example
- * @subpackage Client_Example/includes
+ * @package    Jetpack_Boost
+ * @subpackage Jetpack_Boost/includes
  */
 
 /**
@@ -20,11 +20,11 @@
  * so that it is ready for translation.
  *
  * @since      1.0.0
- * @package    Client_Example
- * @subpackage Client_Example/includes
+ * @package    Jetpack_Boost
+ * @subpackage Jetpack_Boost/includes
  * @author     Automattic <support@jetpack.com>
  */
-class Client_Example_i18n {
+class Jetpack_Boost_i18n {
 
 
 	/**
@@ -35,7 +35,7 @@ class Client_Example_i18n {
 	public function load_plugin_textdomain() {
 
 		load_plugin_textdomain(
-			'client-example',
+			'jetpack-boost',
 			false,
 			dirname( dirname( plugin_basename( __FILE__ ) ) ) . '/languages/'
 		);

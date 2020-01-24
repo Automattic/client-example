@@ -9,8 +9,8 @@
  * @link       https://automattic.com
  * @since      1.0.0
  *
- * @package    Client_Example
- * @subpackage Client_Example/includes
+ * @package    Jetpack_Boost
+ * @subpackage Jetpack_Boost/includes
  */
 
 /**
@@ -23,11 +23,11 @@
  * version of the plugin.
  *
  * @since      1.0.0
- * @package    Client_Example
- * @subpackage Client_Example/includes
+ * @package    Jetpack_Boost
+ * @subpackage Jetpack_Boost/includes
  * @author     Automattic <support@jetpack.com>
  */
-class Client_Example {
+class Jetpack_Boost {
 
 	/**
 	 * The loader that's responsible for maintaining and registering all hooks that power
@@ -35,7 +35,7 @@ class Client_Example {
 	 *
 	 * @since    1.0.0
 	 * @access   protected
-	 * @var      Client_Example_Loader    $loader    Maintains and registers all hooks for the plugin.
+	 * @var      Jetpack_Boost_Loader    $loader    Maintains and registers all hooks for the plugin.
 	 */
 	protected $loader;
 
@@ -77,12 +77,12 @@ class Client_Example {
 	 * @param Automattic\Jetpack\Connection\Manager $manager the connection manager.
 	 */
 	public function __construct( $manager ) {
-		if ( defined( 'CLIENT_EXAMPLE_VERSION' ) ) {
-			$this->version = CLIENT_EXAMPLE_VERSION;
+		if ( defined( 'JETPACK_BOOST_VERSION' ) ) {
+			$this->version = JETPACK_BOOST_VERSION;
 		} else {
 			$this->version = '1.0.0';
 		}
-		$this->plugin_name = 'client-example';
+		$this->plugin_name = 'jetpack-boost';
 
 		$this->manager = $manager;
 
@@ -97,10 +97,10 @@ class Client_Example {
 	 *
 	 * Include the following files that make up the plugin:
 	 *
-	 * - Client_Example_Loader. Orchestrates the hooks of the plugin.
-	 * - Client_Example_i18n. Defines internationalization functionality.
-	 * - Client_Example_Admin. Defines all hooks for the admin area.
-	 * - Client_Example_Public. Defines all hooks for the public side of the site.
+	 * - Jetpack_Boost_Loader. Orchestrates the hooks of the plugin.
+	 * - Jetpack_Boost_i18n. Defines internationalization functionality.
+	 * - Jetpack_Boost_Admin. Defines all hooks for the admin area.
+	 * - Jetpack_Boost_Public. Defines all hooks for the public side of the site.
 	 *
 	 * Create an instance of the loader which will be used to register the hooks
 	 * with WordPress.
@@ -114,33 +114,33 @@ class Client_Example {
 		 * The class responsible for orchestrating the actions and filters of the
 		 * core plugin.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-client-example-loader.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-jetpack-boost-loader.php';
 
 		/**
 		 * The class responsible for defining internationalization functionality
 		 * of the plugin.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-client-example-i18n.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-jetpack-boost-i18n.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the admin area.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-client-example-admin.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-jetpack-boost-admin.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the public-facing
 		 * side of the site.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-client-example-public.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-jetpack-boost-public.php';
 
-		$this->loader = new Client_Example_Loader();
+		$this->loader = new Jetpack_Boost_Loader();
 
 	}
 
 	/**
 	 * Define the locale for this plugin for internationalization.
 	 *
-	 * Uses the Client_Example_i18n class in order to set the domain and to register the hook
+	 * Uses the Jetpack_Boost_i18n class in order to set the domain and to register the hook
 	 * with WordPress.
 	 *
 	 * @since    1.0.0
@@ -148,7 +148,7 @@ class Client_Example {
 	 */
 	private function set_locale() {
 
-		$plugin_i18n = new Client_Example_i18n();
+		$plugin_i18n = new Jetpack_Boost_i18n();
 
 		$this->loader->add_action( 'plugins_loaded', $plugin_i18n, 'load_plugin_textdomain' );
 
@@ -163,7 +163,7 @@ class Client_Example {
 	 */
 	private function define_admin_hooks() {
 
-		$plugin_admin = new Client_Example_Admin(
+		$plugin_admin = new Jetpack_Boost_Admin(
 			$this->get_plugin_name(),
 			$this->get_version(),
 			$this->manager
@@ -183,7 +183,7 @@ class Client_Example {
 	 */
 	private function define_public_hooks() {
 
-		$plugin_public = new Client_Example_Public( $this->get_plugin_name(), $this->get_version() );
+		$plugin_public = new Jetpack_Boost_Public( $this->get_plugin_name(), $this->get_version() );
 
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
@@ -214,7 +214,7 @@ class Client_Example {
 	 * The reference to the class that orchestrates the hooks with the plugin.
 	 *
 	 * @since     1.0.0
-	 * @return    Client_Example_Loader    Orchestrates the hooks of the plugin.
+	 * @return    Jetpack_Boost_Loader    Orchestrates the hooks of the plugin.
 	 */
 	public function get_loader() {
 		return $this->loader;

@@ -6,11 +6,11 @@ In order to use some functionality provided by WordPress.com and used by Jetpack
 
 ## Initialization
 
-The first thing that the plugin must do is [initialize the Connection through the Jetpack Config package ](https://github.com/Automattic/client-example/blob/master/client-example.php#L82). This will set all necessary hooks in order for the rest of the parts to work properly. Notice how the starting point function is run at the `plugins_loaded` hook with priority 1. This is the standard procedure for using Jetpack Config - not too early to allow all plugins to load, but not too late to allow all plugins that need early initialization some space.
+The first thing that the plugin must do is [initialize the Connection through the Jetpack Config package ](https://github.com/Automattic/jetpack-boost/blob/master/jetpack-boost.php#L82). This will set all necessary hooks in order for the rest of the parts to work properly. Notice how the starting point function is run at the `plugins_loaded` hook with priority 1. This is the standard procedure for using Jetpack Config - not too early to allow all plugins to load, but not too late to allow all plugins that need early initialization some space.
 
 ## Admin area
 
-Initalization adds a `Client Example` dashboard item with a control page displaying the main button and some debugging information. It's a very simple [administration page](https://github.com/Automattic/client-example/blob/master/admin/partials/client-example-admin-display.php) with several sections.
+Initalization adds a `Jetpack Boost` dashboard item with a control page displaying the main button and some debugging information. It's a very simple [administration page](https://github.com/Automattic/jetpack-boost/blob/master/admin/partials/jetpack-boost-admin-display.php) with several sections.
 
 ### Site registration
 
@@ -22,7 +22,7 @@ The `Disconnect current user` button appears if you already are  connected to Wo
 
 ## Registration controller
 
-The [registration controller](https://github.com/Automattic/client-example/blob/master/admin/class-client-example-admin.php#L139) is a very basic WordPress action controller with a nonce check. All the heavy lifting is done by the Connection Manager.
+The [registration controller](https://github.com/Automattic/jetpack-boost/blob/master/admin/class-jetpack-boost-admin.php#L139) is a very basic WordPress action controller with a nonce check. All the heavy lifting is done by the Connection Manager.
 
 ## User disconnect controller
 

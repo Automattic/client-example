@@ -6,8 +6,8 @@
  * @link       https://automattic.com
  * @since      1.0.0
  *
- * @package    Client_Example
- * @subpackage Client_Example/includes
+ * @package    Jetpack_Boost
+ * @subpackage Jetpack_Boost/includes
  */
 
 /**
@@ -17,11 +17,11 @@
  * the plugin, and register them with the WordPress API. Call the
  * run function to execute the list of actions and filters.
  *
- * @package    Client_Example
- * @subpackage Client_Example/includes
+ * @package    Jetpack_Boost
+ * @subpackage Jetpack_Boost/includes
  * @author     Automattic <support@jetpack.com>
  */
-class Client_Example_Loader {
+class Jetpack_Boost_Loader {
 
 	/**
 	 * The array of actions registered with WordPress.

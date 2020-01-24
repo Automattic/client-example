@@ -6,8 +6,8 @@
  * @link       https://automattic.com
  * @since      1.0.0
  *
- * @package    Client_Example
- * @subpackage Client_Example/admin
+ * @package    Jetpack_Boost
+ * @subpackage Jetpack_Boost/admin
  */
 
 /**
@@ -16,11 +16,11 @@
  * Defines the plugin name, version, and two examples hooks for how to
  * enqueue the admin-specific stylesheet and JavaScript.
  *
- * @package    Client_Example
- * @subpackage Client_Example/admin
+ * @package    Jetpack_Boost
+ * @subpackage Jetpack_Boost/admin
  * @author     Automattic <support@jetpack.com>
  */
-class Client_Example_Admin {
+class Jetpack_Boost_Admin {
 
 	/**
 	 * The ID of this plugin.
@@ -73,10 +73,10 @@ class Client_Example_Admin {
 	 */
 	public function admin_menu() {
 		add_menu_page(
-			'Client Example',
-			'Client Example',
+			'Jetpack Boost',
+			'Jetpack Boost',
 			'manage_options',
-			'client-example',
+			'jetpack-boost',
 			array( $this, 'generate_menu' ),
 			'',
 			4
@@ -94,15 +94,15 @@ class Client_Example_Admin {
 		 * This function is provided for demonstration purposes only.
 		 *
 		 * An instance of this class should be passed to the run() function
-		 * defined in Client_Example_Loader as all of the hooks are defined
+		 * defined in Jetpack_Boost_Loader as all of the hooks are defined
 		 * in that particular class.
 		 *
-		 * The Client_Example_Loader will then create the relationship
+		 * The Jetpack_Boost_Loader will then create the relationship
 		 * between the defined hooks and the functions defined in this
 		 * class.
 		 */
 
-		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/client-example-admin.css', array(), $this->version, 'all' );
+		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/jetpack-boost-admin.css', array(), $this->version, 'all' );
 
 	}
 
@@ -117,15 +117,15 @@ class Client_Example_Admin {
 		 * This function is provided for demonstration purposes only.
 		 *
 		 * An instance of this class should be passed to the run() function
-		 * defined in Client_Example_Loader as all of the hooks are defined
+		 * defined in Jetpack_Boost_Loader as all of the hooks are defined
 		 * in that particular class.
 		 *
-		 * The Client_Example_Loader will then create the relationship
+		 * The Jetpack_Boost_Loader will then create the relationship
 		 * between the defined hooks and the functions defined in this
 		 * class.
 		 */
 
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/client-example-admin.js', array( 'jquery' ), $this->version, false );
+		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/jetpack-boost-admin.js', array( 'jquery' ), $this->version, false );
 
 	}
 
@@ -133,7 +133,7 @@ class Client_Example_Admin {
 	 * Generate the admin menu page.
 	 */
 	public function generate_menu() {
-		require plugin_dir_path( __FILE__ ) . '/partials/client-example-admin-display.php';
+		require plugin_dir_path( __FILE__ ) . '/partials/jetpack-boost-admin-display.php';
 	}
 
 	/**

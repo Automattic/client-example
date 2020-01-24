@@ -1,5 +1,5 @@
 {
-    "name": "automattic/client-example",
+    "name": "automattic/jetpack-boost",
     "description": "An example plugin that uses Jetpack's connection package in order to estconnection tunnel.",
     "type": "package",
     "license": "GPL-2.0-or-later",

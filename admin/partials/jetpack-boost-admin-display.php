@@ -8,8 +8,8 @@
  * @link       https://automattic.com
  * @since      1.0.0
  *
- * @package    Client_Example
- * @subpackage Client_Example/admin/partials
+ * @package    Jetpack_Boost
+ * @subpackage Jetpack_Boost/admin/partials
  */
 
 $token = $this->manager->get_access_token( get_current_user_id() );
@@ -19,7 +19,7 @@ $blog_token = $this->manager->get_access_token();
 
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->
 
-<h1>Client Example plugin</h1>
+<h1>Jetpack Boost plugin</h1>
 
 <p> This page shows you debugging data. <strong>Keep in mind that this data is sensitive, do not share it without cleaning up the token values first.</strong></p>
 

@@ -22,7 +22,7 @@
  * @link       https://automattic.com
  * @since      1.0.0
  *
- * @package    Client_Example
+ * @package    Jetpack_Boost
  */
 
 // If uninstall not called from WordPress, then exit.

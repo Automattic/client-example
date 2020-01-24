@@ -8,8 +8,8 @@
  * @link       https://automattic.com
  * @since      1.0.0
  *
- * @package    Client_Example
- * @subpackage Client_Example/public/partials
+ * @package    Jetpack_Boost
+ * @subpackage Jetpack_Boost/public/partials
  */
 ?>
 

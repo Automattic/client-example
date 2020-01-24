@@ -23,13 +23,13 @@ Package operations: 3 installs, 0 updates, 0 removals
 Generating autoload files
 ```
 
-After the plugin dependencies are installed, you need to zip the folder and upload it as a plugin to your test site. 
+After the plugin dependencies are installed, you need to zip the folder and upload it as a plugin to your test site.
 
 ```
 $ cd ..
-$ zip -9r --exclude=*.git* client-example.zip client-example
+$ zip -9r --exclude=*.git* jetpack-boost.zip jetpack-boost
 ```
 
 # Usage
 
-The activated plugin will add a `Client Example` dashboard item that opens to a debug page. There you will see three main pieces: *Registration*, *Options*, and *Private Options*. On first installation you should see nothing, but using the button in the Registration section you can request a new blog identifier and token for your site. After a request, the data will be populated by the identifiers and token received from WordPress.com. At that time your site is capable of **signing and verifying signed** requests to and from WordPress.com.
+The activated plugin will add a `Jetpack Boost` dashboard item that opens to a debug page. There you will see three main pieces: *Registration*, *Options*, and *Private Options*. On first installation you should see nothing, but using the button in the Registration section you can request a new blog identifier and token for your site. After a request, the data will be populated by the identifiers and token received from WordPress.com. At that time your site is capable of **signing and verifying signed** requests to and from WordPress.com.

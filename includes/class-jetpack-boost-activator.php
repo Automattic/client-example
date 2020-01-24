@@ -6,8 +6,8 @@
  * @link       https://automattic.com
  * @since      1.0.0
  *
- * @package    Client_Example
- * @subpackage Client_Example/includes
+ * @package    Jetpack_Boost
+ * @subpackage Jetpack_Boost/includes
  */
 
 /**
@@ -16,11 +16,11 @@
  * This class defines all code necessary to run during the plugin's activation.
  *
  * @since      1.0.0
- * @package    Client_Example
- * @subpackage Client_Example/includes
+ * @package    Jetpack_Boost
+ * @subpackage Jetpack_Boost/includes
  * @author     Automattic <support@jetpack.com>
  */
-class Client_Example_Activator {
+class Jetpack_Boost_Activator {
 
 	/**
 	 * Short Description. (use period)
