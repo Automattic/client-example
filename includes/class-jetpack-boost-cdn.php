@@ -101,7 +101,6 @@ class Jetpack_Boost_CDN {
 	}
 
 	function pre_serve_request( $served, $result, $request, $server ) {
-		error_log("pre serve ".$request->get_route());
 		if ( ! $served && preg_match( '|/jpb/v1/.*|', $request->get_route() ) ) {
 			echo $result->get_data();
 			return true;
@@ -113,100 +112,96 @@ class Jetpack_Boost_CDN {
 		// TODO: caching
 		// TODO: check for errors
 
-		return $this->fetch_cdn_response( '/js', $request->get_params(), $request->get_headers() );
-
-		// $cdn_url = add_query_arg( $request->get_params(), $this->cdn_server . '/js' );
-		// $cdn_request = wp_remote_get( $cdn_url );
-		// $cdn_response_body = wp_remote_retrieve_body( $cdn_request );
-
-		// if ( is_wp_error( $cdn_request ) ) {
-		// 	error_log("error: ".print_r($cdn_request, 1));
-		// 	return $cdn_request;
-		// }
-
-		// // error_log("got response body $cdn_response_body");
-
-		// return new WP_REST_Response(
-		// 	$cdn_response_body, //file_get_contents( plugin_dir_path( JETPACK__PLUGIN_FILE ) . '_inc/build/universal/' . $client_slug . '.js' ),
-		// 	200,
-		// 	array(
-		// 		'Content-Type' => 'application/javascript'
-		// 	)
-		// );
+		return $this->generate_cdn_response( '/js', $request->get_params(), $request->get_headers() );
 	}
 
 	function rest_serve_css( $request ) {
 		// TODO: caching
 		// TODO: check for errors
 
-		return $this->fetch_cdn_response( '/css', $request->get_params(), $request->get_headers() );
+		return $this->generate_cdn_response( '/css', $request->get_params(), $request->get_headers() );
 	}
 
 	/**
 	 * Fetch and cache a response from our CDN
 	 */
-	private function fetch_cdn_response( $cdn_path, $cdn_params, $headers ) {
+	private function generate_cdn_response( $cdn_path, $cdn_params, $headers ) {
+
 		$cdn_url = add_query_arg( $cdn_params, $this->cdn_server . $cdn_path );
 
 		// disable converting local to absolute urls
 		$cdn_url = add_query_arg( 'l', 1, $cdn_url );
 
-		$allowed_headers = [ 'accept', 'accept_encoding', 'user_agent' ];
+		// attempt to fetch from cache
+		// TODO link to this file directly from page using content_url() if we know it exists during page render? But what if the page output is cached?
+		$cache_key = hash( "sha256", $cdn_url );
+		$cache_dir = WP_CONTENT_DIR . '/jetpack-boost-cache/';
+		wp_mkdir_p( $cache_dir );
+		$cache_file = $cache_dir . $cache_key;
 
-		$valid_headers = array_filter(
-			$headers,
-			function ( $key ) use ( $allowed_headers ) {
-				return in_array( $key, $allowed_headers );
-			},
-			ARRAY_FILTER_USE_KEY
-		);
+		if ( file_exists( $cache_file ) && ( $cache_file_size = filesize( $cache_file ) ) > 0 ) {
+			error_log('returning cached response for '.$cdn_url);
+			$cache_file_handle = fopen( $cache_file, 'r' );
+			$curl_response = fread( $cache_file_handle, $cache_file_size );
+			fclose( $cache_file_handle );
+		} else {
+			error_log('generating new response for '.$cdn_url);
+			$allowed_headers = [ 'accept', 'accept_encoding', 'user_agent' ];
 
-		// map array-of-arrays we get from WP Rest Request
-		$curl_headers = array_map( function( $header ) { return implode( ';', $header ); }, $valid_headers );
+			$valid_headers = array_filter(
+				$headers,
+				function ( $key ) use ( $allowed_headers ) {
+					return in_array( $key, $allowed_headers );
+				},
+				ARRAY_FILTER_USE_KEY
+			);
 
-		$curl = curl_init();
-		curl_setopt( $curl, CURLOPT_URL, $cdn_url );
-		curl_setopt( $curl, CURLOPT_RETURNTRANSFER, 1 );
-		curl_setopt( $curl, CURLOPT_HTTPHEADER, $curl_headers ); // forward client headers
-		curl_setopt( $curl, CURLOPT_HEADER, 1 );
-		curl_setopt( $curl, CURLOPT_TIMEOUT, 10 );
-		$curl_response               = curl_exec( $curl ); // execute the curl command
-		$curl_response_header_size   = curl_getinfo( $curl, CURLINFO_HEADER_SIZE );
-		$curl_response_headers       = substr( $curl_response, 0, $curl_response_header_size );
+			// map array-of-arrays we get from WP Rest Request
+			$curl_headers = array_map( function( $header ) { return implode( ';', $header ); }, $valid_headers );
+
+			$curl = curl_init();
+			curl_setopt( $curl, CURLOPT_URL, $cdn_url );
+			curl_setopt( $curl, CURLOPT_RETURNTRANSFER, 1 );
+			curl_setopt( $curl, CURLOPT_HTTPHEADER, $curl_headers ); // forward client headers
+			curl_setopt( $curl, CURLOPT_HEADER, 1 );
+			curl_setopt( $curl, CURLOPT_TIMEOUT, 10 );
+			$curl_response = curl_exec( $curl ); // execute the curl command
+			curl_close( $curl ); // close the connection
+
+			// write the cache file
+			$cache_file_handle = fopen( $cache_file, "w" );
+			$write = fputs( $cache_file_handle, $curl_response );
+			fclose( $cache_file_handle );
+		}
+
+		list( $curl_response_headers, $curl_response_body ) = explode("\r\n\r\n", $curl_response, 3);
 		$curl_response_headers_array = $this->get_headers_from_curl_response( $curl_response_headers );
-		$curl_response_body          = substr( $curl_response, $curl_response_header_size);
-		curl_close( $curl ); // close the connection
-
-		// error_log(print_r($curl_response_headers,1));
-		// error_log(print_r($curl_response_headers_array,1));
-		// error_log(print_r($curl_response_body,1));
 
 		return new WP_REST_Response(
 			$curl_response_body, //file_get_contents( plugin_dir_path( JETPACK__PLUGIN_FILE ) . '_inc/build/universal/' . $client_slug . '.js' ),
 			200,
 			array(
-				'Content-Type'  => $curl_response_headers_array['Content-Type'],
-				'ETag'          => $curl_response_headers_array['ETag'],
-				'Expires'       => $curl_response_headers_array['Expires'],
-				'Cache-Control' => $curl_response_headers_array['Cache-Control'],
+				'Content-Type'     => $curl_response_headers_array['content_type'],
+				'ETag'             => $curl_response_headers_array['etag'],
+				'Expires'          => $curl_response_headers_array['expires'],
+				'Cache-Control'    => $curl_response_headers_array['cache_control']
 			)
 		);
 	}
 
-	function get_headers_from_curl_response( $response ) {
+	function get_headers_from_curl_response( $header_text ) {
 		$headers = array();
 
-		$header_text = substr($response, 0, strpos($response, "\r\n\r\n"));
-
-		foreach (explode("\r\n", $header_text) as $i => $line)
-			if ($i === 0)
+		foreach( explode("\r\n", $header_text) as $i => $line ) {
+			if ($i === 0) {
 				$headers['http_code'] = $line;
-			else
-			{
-				list ($key, $value) = explode(': ', $line);
-
+			} else {
+				list ( $key, $value ) = explode( ': ', $line );
+				$key = strtolower( $key );
+        		$key = str_replace( '-', '_', $key );
 				$headers[$key] = $value;
 			}
+		}
 
 		return $headers;
 	}
