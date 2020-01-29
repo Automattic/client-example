@@ -60,21 +60,6 @@ class Jetpack_Boost_Public {
 	 * @since    1.0.0
 	 */
 	public function enqueue_styles() {
-
-		/**
-		 * This function is provided for demonstration purposes only.
-		 *
-		 * An instance of this class should be passed to the run() function
-		 * defined in Jetpack_Boost_Loader as all of the hooks are defined
-		 * in that particular class.
-		 *
-		 * The Jetpack_Boost_Loader will then create the relationship
-		 * between the defined hooks and the functions defined in this
-		 * class.
-		 */
-
-		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/jetpack-boost-public.css', array(), $this->version, 'all' );
-
 	}
 
 	/**
@@ -83,20 +68,26 @@ class Jetpack_Boost_Public {
 	 * @since    1.0.0
 	 */
 	public function enqueue_scripts() {
+	}
 
-		/**
-		 * This function is provided for demonstration purposes only.
-		 *
-		 * An instance of this class should be passed to the run() function
-		 * defined in Jetpack_Boost_Loader as all of the hooks are defined
-		 * in that particular class.
-		 *
-		 * The Jetpack_Boost_Loader will then create the relationship
-		 * between the defined hooks and the functions defined in this
-		 * class.
-		 */
+	public function plugins_loaded() {
+		if ( JETPACK_BOOST_ENABLED ) {
+			// minifier needs to be hooked before template_redirect, since it depends on that hook
+			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-jetpack-boost-minify-html.php';
+			Jetpack_Boost_Minify_HTML::instance();
 
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/jetpack-boost-public.js', array( 'jquery' ), $this->version, false );
+			// TODO: check which of these are enabled
+			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-jetpack-boost-cdn.php';
+			Jetpack_Boost_CDN::instance();
+		}
+	}
+
+	/**
+	 * Initialise necessary hooks as early as possible
+	 *
+	 * @since    1.0.0
+	 */
+	public function template_redirect() {
 
 	}
 

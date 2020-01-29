@@ -31,3 +31,12 @@ The same can be said about the disconnect controller - it's just handling a form
 ## Callback controller
 
 The callback controller also works using the handlers set up by the Connection Manager at initialization state. This callback is needed for WordPress.com to confirm the registration intent.
+
+## TODO
+
+- extract caching mechanism from wp super cache as a Jetpack package to use a read-through cache for compressed assets
+- include lazy images?
+- include photon?
+- add critical CSS
+- fetch and serve concatenated assets from origin
+- minify html

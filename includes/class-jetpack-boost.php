@@ -185,6 +185,11 @@ class Jetpack_Boost {
 
 		$plugin_public = new Jetpack_Boost_Public( $this->get_plugin_name(), $this->get_version() );
 
+		// since this is fired on plugins_loaded, call that hook immediately
+		$plugin_public->plugins_loaded();
+
+		// first hook fired on public pages
+		$this->loader->add_action( 'template_redirect', $plugin_public, 'template_redirect' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
 

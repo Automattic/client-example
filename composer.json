@@ -14,6 +14,7 @@
 		"automattic/jetpack-autoloader": "dev-master",
         "automattic/jetpack-connection": "dev-master",
         "automattic/jetpack-tracking": "dev-master",
-        "automattic/jetpack-config": "dev-master"
+        "automattic/jetpack-config": "dev-master",
+        "mrclay/minify": "^3.0@dev"
     }
 }

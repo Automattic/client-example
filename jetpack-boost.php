@@ -18,7 +18,7 @@ use Automattic\Jetpack\Connection\Manager;
  * @wordpress-plugin
  * Plugin Name:       Jetpack Boost
  * Plugin URI:        https://jetpack.com
- * Description:       This is a short description of what the plugin does. It's displayed in the WordPress admin area.
+ * Description:       A collection of performance enhancements.
  * Version:           1.0.0
  * Author:            Automattic
  * Author URI:        https://automattic.com
@@ -39,6 +39,7 @@ if ( ! defined( 'WPINC' ) ) {
  * Rename this for your plugin and update it as you release new versions.
  */
 define( 'JETPACK_BOOST_VERSION', '1.0.0' );
+define( 'JETPACK_BOOST_ENABLED', true );
 
 require_once plugin_dir_path( __FILE__ ) . '/vendor/autoload_packages.php';
 
