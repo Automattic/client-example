@@ -12,7 +12,7 @@
  * @subpackage Client_Example/admin/partials
  */
 
-$token = $this->manager->get_access_token( get_current_user_id() );
+$user_token = $this->manager->get_access_token( get_current_user_id() );
 $blog_token = $this->manager->get_access_token();
 
 ?>
@@ -21,46 +21,61 @@ $blog_token = $this->manager->get_access_token();
 
 <h1>Client Example plugin</h1>
 
-<p> This page shows you debugging data. <strong>Keep in mind that this data is sensitive, do not share it without cleaning up the token values first.</strong></p>
+<p>This page shows you debugging data. <strong>Keep in mind that this data is sensitive, do not share it without cleaning up the token values first.</strong></p>
 
-<h2>Registration</h2>
-
-<form action="/wp-admin/admin-post.php" method="post">
-	<input type="hidden" name="action" value="register_site">
-	<?php wp_nonce_field( 'register-site' ); ?>
-	<input type="submit" value="Register this site">
-</form>
-<?php if ( $token ) : ?>
-<form action="/wp-admin/admin-post.php" method="post">
-	<input type="hidden" name="action" value="disconnect_user">
-	<?php wp_nonce_field( 'disconnect-user' ); ?>
-	<input type="submit" value="Disconnect current user">
-</form>
+<h2>Site Registration / Blog token</h2>
+<hr />
+<p>This is the first step and prerequisite for any Jetpack connection. "Registering" the site basically means creating a blog token,
+	and "registering" the site with wpcom. It is required before any user authentication can proceed.</p>
+<strong>Current site registration status: </strong>
+<?php if ( ! $blog_token ) : ?>
+	<p>Unregistered :(</p>
+	<form action="/wp-admin/admin-post.php" method="post">
+		<input type="hidden" name="action" value="register_site">
+		<?php wp_nonce_field( 'register-site' ); ?>
+		<input type="submit" value="Register this site">
+	</form>
 <?php else: ?>
-<form action="/wp-admin/admin-post.php" method="post">
-	<input type="hidden" name="action" value="connect_user">
-	<?php wp_nonce_field( 'connect-user' ); ?>
-	<input type="submit" value="Connect current user">
-</form>
-<?php endif;
+	<p>Woohoo! This site is registered with wpcom, and has a functioning blog token for authenticated site requests!
+		You should be able to see the token value in the Private Options dump lower in this page.</p>
 
-if ( $blog_token ) : ?>
-<form action="/wp-admin/admin-post.php" method="post">
-	<input type="hidden" name="action" value="disconnect_site">
-	<?php wp_nonce_field( 'disconnect-site' ); ?>
-	<input type="submit" value="Disconnect site">
-</form>
+	<form action="/wp-admin/admin-post.php" method="post">
+		<strong>Disconnect / deregister</strong>
+		<p>Now that the site is registered, you may de-register (disconnect) it! Be weary though,
+			it will also delete any and all user tokens with it, since those rely on the blog token too!</p>
+		<input type="hidden" name="action" value="disconnect_site">
+		<?php wp_nonce_field( 'disconnect-site' ); ?>
+		<input type="submit" value="Disconnect site">
+	</form>
+<?php endif; ?>
+<br>
+<h2>User auth / user token creation.</h2>
+<hr />
+<?php if ( $blog_token ) : ?>
+	<p>Now that we have a registered site, we can authenticate users!</p>
+<?php else: ?>
+	<p>Wait! Before we do any user authentication, we need to register the site above! You can try it if you want, but you'll get some errors :)</p>
 <?php endif; ?>
 
-<h2>Current user token</h2>
+<?php if ( $user_token ) : ?>
+	<form action="/wp-admin/admin-post.php" method="post">
+		<p>Awesome! You are connected as an authenticated user! You even have your own token! much wow. Now you may destroy it :)</p>
+		<p><strong>Unless...</strong> you are also the "master user", in which case it will fail (we could use some error handling instead)</p>
+		<input type="hidden" name="action" value="disconnect_user">
+		<?php wp_nonce_field( 'disconnect-user' ); ?>
+		<input type="submit" value="Disconnect current user">
+	</form>
+<?php else: ?>
+	<form action="/wp-admin/admin-post.php" method="post">
+		<input type="hidden" name="action" value="connect_user">
+		<?php wp_nonce_field( 'connect-user' ); ?>
+		<input type="submit" value="Connect current user">
+	</form>
+<?php endif; ?>
 
-<pre>
-<?php
-print_r( $token ? $token : 'The current user is not connected' );
-?>
-</pre>
-
+<br>
 <h2>Jetpack options dump</h2>
+<hr />
 
 <p>When a Jetpack-powered site is registered, it should be assigned an ID, which should be present in the list below.</p>
 
@@ -69,7 +84,8 @@ print_r( $token ? $token : 'The current user is not connected' );
 </pre>
 
 <h2>Jetpack private options dump</h2>
-								<p>Even though Jetpack is not installed on your site, the dump below should display the blog_token for your site if you have pressed the Register button. </p>
+<p>Even though Jetpack is not installed on your site, the dump below should display the blog_token for your site if you have pressed the Register button. </p>
 <pre>
 <?php print_r( get_option( 'jetpack_private_options', array() ) ); ?>
 </pre>
+
