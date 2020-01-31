@@ -65,6 +65,27 @@ class Client_Example_Admin {
 				return wp_generate_password( 32, false );
 			};
 		} );
+
+		add_filter( 'jetpack_api_url', array( $this, 'filter_connect_api_iframe_url' ), 10, 2 );
+
+	}
+
+	/**
+	 * Filters the API URL that is used for connect requests. The method
+	 * intercepts only the authorize URL and replaces it with another if needed.
+	 *
+	 * @param String $api_url the default redirect API URL used by the package.
+	 * @param String $relative_url the path of the URL that's being used.
+	 * @return String the modified URL.
+	 */
+	public function filter_connect_api_iframe_url( $api_url, $relative_url ) {
+
+		// Short-circuit on anything that is not related to connect requests.
+		if ( 'authorize' !== $relative_url ) {
+			return $api_url;
+		}
+
+		return $this->manager->api_url( 'authorize_iframe' );
 	}
 
 	/**
@@ -126,7 +147,8 @@ class Client_Example_Admin {
 		 */
 
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/client-example-admin.js', array( 'jquery' ), $this->version, false );
-
+		wp_enqueue_script( 'jetpack-iframe-embed', '//s0.wp.com/wp-content/mu-plugins/jetpack-iframe-embed/jetpack-iframe-embed.js', array( 'jquery' ), $ver );
+		wp_localize_script( 'jetpack-iframe-embed', '_previewSite', array( 'siteURL' => get_site_url() ) );
 	}
 
 	/**

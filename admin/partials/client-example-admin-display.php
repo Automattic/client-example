@@ -14,7 +14,7 @@
 
 $token = $this->manager->get_access_token( get_current_user_id() );
 $blog_token = $this->manager->get_access_token();
-
+$auth_url = $this->manager->get_authorization_url( null, admin_url( '?page=client-example' ) );
 ?>
 
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->
@@ -72,4 +72,14 @@ print_r( $token ? $token : 'The current user is not connected' );
 								<p>Even though Jetpack is not installed on your site, the dump below should display the blog_token for your site if you have pressed the Register button. </p>
 <pre>
 <?php print_r( get_option( 'jetpack_private_options', array() ) ); ?>
+</pre>
+
+<iframe class="jp-jetpack-connect__iframe" /></iframe>
+<script type="application/javascript">
+jQuery( function( $ ) {
+	var authorize_url = <?php echo wp_json_encode( $auth_url ); ?>;
+	$( '.jp-jetpack-connect__iframe' ).attr( 'src', authorize_url );
+} );
+</script>
+		 <pre>
 </pre>
