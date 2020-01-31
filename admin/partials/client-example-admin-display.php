@@ -94,5 +94,11 @@ $auth_url = $this->manager->get_authorization_url( null, admin_url( '?page=clien
 jQuery( function( $ ) {
 	var authorize_url = <?php echo wp_json_encode( $auth_url ); ?>;
 	$( '.jp-jetpack-connect__iframe' ).attr( 'src', authorize_url );
+
+	window.addEventListener('message', (event) => {
+		if ( 'close' === event.data ) {
+			location.reload(true);
+		}
+	} );
 } );
 </script>
