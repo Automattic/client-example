@@ -147,8 +147,6 @@ class Client_Example_Admin {
 		 */
 
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/client-example-admin.js', array( 'jquery' ), $this->version, false );
-		wp_enqueue_script( 'jetpack-iframe-embed', '//s0.wp.com/wp-content/mu-plugins/jetpack-iframe-embed/jetpack-iframe-embed.js', array( 'jquery' ), $ver );
-		wp_localize_script( 'jetpack-iframe-embed', '_previewSite', array( 'siteURL' => get_site_url() ) );
 	}
 
 	/**
