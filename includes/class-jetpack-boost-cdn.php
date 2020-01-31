@@ -5,7 +5,10 @@
  * - asset inlining for smaller styles?
  * - critical CSS support?
  * - non-enqueued assets?
+ * - how to authorize to the CDN
  */
+
+require_once 'class-jetpack-boost-filecache.php';
 
 class Jetpack_Boost_CDN {
 	private static $__instance = null;
@@ -15,7 +18,6 @@ class Jetpack_Boost_CDN {
 	private $serve_from_origin; // proxy files via the origin and cache locally - helps a lot with http2
 	private $concat_style_groups = array();
 	private $concat_script_groups = array();
-	private $inject_critical_css = false;
 	private $include_external_assets = false;
 	private $max_assets_per_tag = 1;
 
@@ -100,6 +102,7 @@ class Jetpack_Boost_CDN {
 		) );
 	}
 
+	// prevent javascript and CSS strings from being JSON-encoded
 	function pre_serve_request( $served, $result, $request, $server ) {
 		if ( ! $served && preg_match( '|/jpb/v1/.*|', $request->get_route() ) ) {
 			echo $result->get_data();
@@ -109,101 +112,37 @@ class Jetpack_Boost_CDN {
 	}
 
 	function rest_serve_js( $request ) {
-		// TODO: caching
-		// TODO: check for errors
-
-		return $this->generate_cdn_response( '/js', $request->get_params(), $request->get_headers() );
+		return $this->generate_cdn_response( 'js', $request->get_params(), $request->get_headers() );
 	}
 
 	function rest_serve_css( $request ) {
-		// TODO: caching
-		// TODO: check for errors
-
-		return $this->generate_cdn_response( '/css', $request->get_params(), $request->get_headers() );
+		return $this->generate_cdn_response( 'css', $request->get_params(), $request->get_headers() );
 	}
 
 	/**
 	 * Fetch and cache a response from our CDN
 	 */
-	private function generate_cdn_response( $cdn_path, $cdn_params, $headers ) {
+	private function generate_cdn_response( $file_type, $cdn_params, $request_headers ) {
 
+		$cdn_path = '/' . $file_type; // /js or /css
 		$cdn_url = add_query_arg( $cdn_params, $this->cdn_server . $cdn_path );
 
 		// disable converting local to absolute urls
-		$cdn_url = add_query_arg( 'l', 1, $cdn_url );
+		// actually since the CSS is being served from a different _local_ URL, we still need to convert :)
+		// $cdn_url = add_query_arg( 'l', 1, $cdn_url );
 
-		// attempt to fetch from cache
-		// TODO link to this file directly from page using content_url() if we know it exists during page render? But what if the page output is cached?
-		$cache_key = hash( "sha256", $cdn_url );
-		$cache_dir = WP_CONTENT_DIR . '/jetpack-boost-cache/';
-		wp_mkdir_p( $cache_dir );
-		$cache_file = $cache_dir . $cache_key;
-
-		if ( file_exists( $cache_file ) && ( $cache_file_size = filesize( $cache_file ) ) > 0 ) {
-			error_log('returning cached response for '.$cdn_url);
-			$cache_file_handle = fopen( $cache_file, 'r' );
-			$curl_response = fread( $cache_file_handle, $cache_file_size );
-			fclose( $cache_file_handle );
-		} else {
-			error_log('generating new response for '.$cdn_url);
-			$allowed_headers = [ 'accept', 'accept_encoding', 'user_agent' ];
-
-			$valid_headers = array_filter(
-				$headers,
-				function ( $key ) use ( $allowed_headers ) {
-					return in_array( $key, $allowed_headers );
-				},
-				ARRAY_FILTER_USE_KEY
-			);
-
-			// map array-of-arrays we get from WP Rest Request
-			$curl_headers = array_map( function( $header ) { return implode( ';', $header ); }, $valid_headers );
-
-			$curl = curl_init();
-			curl_setopt( $curl, CURLOPT_URL, $cdn_url );
-			curl_setopt( $curl, CURLOPT_RETURNTRANSFER, 1 );
-			curl_setopt( $curl, CURLOPT_HTTPHEADER, $curl_headers ); // forward client headers
-			curl_setopt( $curl, CURLOPT_HEADER, 1 );
-			curl_setopt( $curl, CURLOPT_TIMEOUT, 10 );
-			$curl_response = curl_exec( $curl ); // execute the curl command
-			curl_close( $curl ); // close the connection
-
-			// write the cache file
-			$cache_file_handle = fopen( $cache_file, "w" );
-			$write = fputs( $cache_file_handle, $curl_response );
-			fclose( $cache_file_handle );
-		}
-
-		list( $curl_response_headers, $curl_response_body ) = explode("\r\n\r\n", $curl_response, 3);
-		$curl_response_headers_array = $this->get_headers_from_curl_response( $curl_response_headers );
+		list( $response_headers, $response_body ) = Jetpack_Boost_Filecache::fetch_and_cache( $cdn_url, 'GET', $file_type, null, $request_headers );
 
 		return new WP_REST_Response(
-			$curl_response_body, //file_get_contents( plugin_dir_path( JETPACK__PLUGIN_FILE ) . '_inc/build/universal/' . $client_slug . '.js' ),
+			$response_body, //file_get_contents( plugin_dir_path( JETPACK__PLUGIN_FILE ) . '_inc/build/universal/' . $client_slug . '.js' ),
 			200,
 			array(
-				'Content-Type'     => $curl_response_headers_array['content_type'],
-				'ETag'             => $curl_response_headers_array['etag'],
-				'Expires'          => $curl_response_headers_array['expires'],
-				'Cache-Control'    => $curl_response_headers_array['cache_control']
+				'Content-Type'     => $response_headers['content_type'],
+				'ETag'             => $response_headers['etag'],
+				'Expires'          => $response_headers['expires'],
+				'Cache-Control'    => $response_headers['cache_control']
 			)
 		);
-	}
-
-	function get_headers_from_curl_response( $header_text ) {
-		$headers = array();
-
-		foreach( explode("\r\n", $header_text) as $i => $line ) {
-			if ($i === 0) {
-				$headers['http_code'] = $line;
-			} else {
-				list ( $key, $value ) = explode( ': ', $line );
-				$key = strtolower( $key );
-        		$key = str_replace( '-', '_', $key );
-				$headers[$key] = $value;
-			}
-		}
-
-		return $headers;
 	}
 
 	function jetpack_implode_frontend_css() {
@@ -315,7 +254,8 @@ class Jetpack_Boost_CDN {
 				http_build_query( array( 'v' => $vers ) );
 
 			// if we are injecting critical CSS, load the full CSS async
-			if ( $this->inject_critical_css ) {
+			// TODO: what happens here if javascript is disabled? Should we have a noscript version?
+			if ( apply_filters( 'jetpack_boost_inject_critical_css', false ) ) {
 				echo '<link rel="preload" onload="this.rel=\'stylesheet\'" as="style" type="text/css" media="' . $media . '" href="' . esc_attr( $cdn_url ) . '"/>';
 			} else {
 				echo '<link rel="stylesheet" type="text/css" media="' . $media . '" href="' . esc_attr( $cdn_url ) . '"/>';

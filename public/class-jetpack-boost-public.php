@@ -72,13 +72,17 @@ class Jetpack_Boost_Public {
 
 	public function plugins_loaded() {
 		if ( JETPACK_BOOST_ENABLED ) {
+			// TODO: check which of these are enabled based on a user's plan, etc.
+
 			// minifier needs to be hooked before template_redirect, since it depends on that hook
 			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-jetpack-boost-minify-html.php';
 			Jetpack_Boost_Minify_HTML::instance();
 
-			// TODO: check which of these are enabled
 			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-jetpack-boost-cdn.php';
 			Jetpack_Boost_CDN::instance();
+
+			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-jetpack-boost-critical-css.php';
+			Jetpack_Boost_Critical_CSS::instance();
 		}
 	}
 
