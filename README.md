@@ -32,6 +32,26 @@ The same can be said about the disconnect controller - it's just handling a form
 
 The callback controller also works using the handlers set up by the Connection Manager at initialization state. This callback is needed for WordPress.com to confirm the registration intent.
 
+## Generating Critical CSS
+
+Critical CSS is not generated on-demand, but only (currently) from WP Shell, on a per-URL basis:
+
+```
+$ wp shell
+wp> Jetpack_Boost_Filecache::get_server_response( 'http://localhost:8090/critical', 'POST', 'css', [ 'url' => 'http://goldsounds2.ngrok.io/a-complex-post' ], [] );
+```
+
+It's important that the parameters above EXACTLY match what the service is using to request the cached CSS.
+
+Also there's an optimisation problem right now where, theoretically, we could be generating the same critical CSS over and over again for different pages and storing them all separately on the site.
+
+I think the best way to deal with this is to be somewhat selective about which pages get critical CSS generated for them:
+
+- more than a certain amount/frequency of traffic - perhaps we could use this to suggest existing pages to generate critical CSS, and then also offer it as an option at publish time?
+- critical CSS has been determined to be a real performance benefit for that page (is there a way to determine this in advance?)
+- maybe the user just has to opt in to this on a per-url basis (post_id, home page, ... other?)
+- probably need to maintain a list of URLs that should have critical CSS, so if we need to bust the cache (e.g. on theme upgrade) we can do it just for the pages and assets we care about, and automatically kick off regeneration jobs
+
 ## TODO
 
 - extract caching mechanism from wp super cache as a Jetpack package to use a read-through cache for compressed assets
