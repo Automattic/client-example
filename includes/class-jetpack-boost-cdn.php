@@ -10,6 +10,80 @@
 
 require_once 'class-jetpack-boost-filecache.php';
 
+define( 'JETPACK_BOOST_LOCAL_ENDPOINT_BASE', '/wp-json/jpb/v1' );
+
+class Jetpack_Boost_CDN_Url_Builder {
+	static function get_cdn_url() {
+		return apply_filters( 'jetpack_boost_cdn_url', 'http://localhost:8090' );
+	}
+
+	static function get_js_url( $assets, $versions = null, $base_url = null ) {
+		return self::get_assets_url( 'js', $assets, $versions, $base_url );
+	}
+
+	static function get_css_url( $assets, $versions = null, $base_url = null ) {
+		return self::get_assets_url( 'css', $assets, $versions, $base_url );
+	}
+
+	/**
+	 * Generate a URL for a set of assets with optional versions and base_url
+	 *
+	 * - Try generating URL to CDN (e.g. wpvm.io/js?b=http://mysite.com&f[]=/js/foo.js)
+	 * - If serving from CDN directly, return that URL
+	 * - If serving locally, checked for cached asset
+	 * - If no cached asset, link to local URL that fetches the asset server-to-server and then caches locally, and return that
+	 */
+	private static function get_assets_url( $file_extension, $assets, $versions, $base_url ) {
+		$cdn_url = self::get_cdn_url();
+
+		// generate the canonical URL - this is used as a cache key
+		$assets_url   = $cdn_url . '/' . $file_extension;
+
+		$assets_url   = add_query_arg( 'f', $assets, $assets_url );
+
+		if ( ! empty( $versions ) ) {
+			$assets_url   = add_query_arg( 'v', $versions, $assets_url );
+		}
+
+		if ( ! is_null( $base_url ) ) {
+			$assets_url   = add_query_arg( 'b', $base_url, $assets_url );
+		}
+
+		// check if we want to simply link to the external asset
+		if ( ! apply_filters( 'jetpack_boost_serve_from_origin', false ) ) {
+			return $assets_url;
+		}
+
+		// if we have a cached asset in wp-content, link to it directly
+		$cached_assets_url = Jetpack_Boost_Filecache::get_cached_resource_url( $assets_url, $file_extension );
+
+		if ( $cached_assets_url ) {
+			error_log("returning cached assets URL $cached_assets_url");
+			return $cached_assets_url;
+		}
+
+		// serve from the local endpoint, which will cache the response on the server while fetching
+		// then future requests will link directly to the cached file for performance reasons
+		$local_assets_url = str_replace( $cdn_url, JETPACK_BOOST_LOCAL_ENDPOINT_BASE, $assets_url );
+
+		error_log("returning local assets URL $local_assets_url");
+
+		return $local_assets_url;
+	}
+
+	static function check_for_cached_cdn_file( $url, $file_extension ) {
+		error_log("checking for cached URL for $url");
+		$cached_asset_url = Jetpack_Boost_Filecache::get_cached_resource_url( $url, $file_extension );
+		error_log("got asset url $cached_asset_url");
+
+		if ( $cached_asset_url ) {
+			return $cached_asset_url;
+		}
+
+		return $url;
+	}
+}
+
 class Jetpack_Boost_CDN {
 	private static $__instance = null;
 
@@ -105,7 +179,12 @@ class Jetpack_Boost_CDN {
 	// prevent javascript and CSS strings from being JSON-encoded
 	function pre_serve_request( $served, $result, $request, $server ) {
 		if ( ! $served && preg_match( '|/jpb/v1/.*|', $request->get_route() ) ) {
-			echo $result->get_data();
+			$data = $result->get_data();
+			if ( is_string( $data ) ) {
+				echo $data;
+			} else {
+				echo '';
+			}
 			return true;
 		}
 		return $served;
@@ -123,25 +202,31 @@ class Jetpack_Boost_CDN {
 	 * Fetch and cache a response from our CDN
 	 */
 	private function generate_cdn_response( $file_type, $cdn_params, $request_headers ) {
+		$cdn_host = Jetpack_Boost_CDN_Url_Builder::get_cdn_url();
+		$cdn_url = add_query_arg( $_GET, $cdn_host . '/' . $file_type );
+		$cdn_response = Jetpack_Boost_Filecache::fetch_and_cache( $cdn_url, 'GET', $file_type, null, $request_headers );
 
-		$cdn_path = '/' . $file_type; // /js or /css
-		$cdn_url = add_query_arg( $cdn_params, $this->cdn_server . $cdn_path );
+		// if there's an error, return an empty response with appropriate info in the header
+		if ( is_wp_error( $cdn_response ) ) {
+			$response_headers = [
+				'X-Jetpack-Boost-Error-Code' => $cdn_response->get_error_code(),
+				'X-Jetpack-Boost-Error-Message' => $cdn_response->get_error_message(),
+				// simulate correct content type otherwise Chrome outputs spurious console messages
+				'Content-Type' => ( 'css' === $file_type ) ? 'text/css' : 'application/javascript'
+			];
+			return new WP_REST_Response(
+				'',
+				500,
+				$response_headers
+			);
+		}
 
-		// disable converting local to absolute urls
-		// actually since the CSS is being served from a different _local_ URL, we still need to convert :)
-		// $cdn_url = add_query_arg( 'l', 1, $cdn_url );
-
-		list( $response_headers, $response_body ) = Jetpack_Boost_Filecache::fetch_and_cache( $cdn_url, 'GET', $file_type, null, $request_headers );
+		list( $response_headers, $response_body ) = $cdn_response;
 
 		return new WP_REST_Response(
-			$response_body, //file_get_contents( plugin_dir_path( JETPACK__PLUGIN_FILE ) . '_inc/build/universal/' . $client_slug . '.js' ),
+			$response_body,
 			200,
-			array(
-				'Content-Type'     => $response_headers['content_type'],
-				'ETag'             => $response_headers['etag'],
-				'Expires'          => $response_headers['expires'],
-				'Cache-Control'    => $response_headers['cache_control']
-			)
+			$response_headers
 		);
 	}
 
@@ -165,11 +250,7 @@ class Jetpack_Boost_CDN {
 
 		if ( ! $this->should_concat_script( $script ) && $this->should_cdn_script( $script ) ) {
 			// serve this script from the CDN
-			$url = $this->base_url . '/js';
-			$url = add_query_arg( array(
-				'f' => array( $src )
-			), $url );
-			return $url;
+			return Jetpack_Boost_CDN_Url_Builder::get_js_url( [ $src ] );
 		}
 
 		return $src;
@@ -192,12 +273,7 @@ class Jetpack_Boost_CDN {
 		$style = $wp_styles->registered[$handle];
 
 		if ( ! $this->should_concat_style( $style ) && $this->should_cdn_style( $style ) ) {
-			// serve this style from the CDN
-			$url = $this->base_url . '/css';
-			$url = add_query_arg( array(
-				'f' => array( $src )
-			), $url );
-			return $url;
+			return Jetpack_Boost_CDN_Url_Builder::get_css_url( [ $src ] );
 		}
 
 		return $src;
@@ -248,10 +324,7 @@ class Jetpack_Boost_CDN {
 				$vers[] = $style->ver ? $style->ver : $wp_styles->default_version;
 			}
 
-			$cdn_url = $this->base_url . '/css?b=' .
-				urlencode( $site_url ) . '&' .
-				http_build_query( array( 'f' => $urls ) ) . '&' .
-				http_build_query( array( 'v' => $vers ) );
+			$cdn_url = Jetpack_Boost_CDN_Url_Builder::get_css_url( $urls, $vers, $site_url );
 
 			// if we are injecting critical CSS, load the full CSS async
 			// TODO: what happens here if javascript is disabled? Should we have a noscript version?
@@ -311,6 +384,8 @@ class Jetpack_Boost_CDN {
 			urlencode( $site_url ) . '&' .
 			http_build_query( array( 'f' => $urls ) ) . '&' .
 			http_build_query( array( 'v' => $vers ) );
+
+		$cdn_url = apply_filters( 'jetpack_boost_cdn_asset_url', $cdn_url, 'js' );
 
 		echo '<script type="text/javascript" src="' . esc_attr( $cdn_url ) . '"></script>';
 

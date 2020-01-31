@@ -34,6 +34,7 @@ class Jetpack_Boost_Critical_CSS {
 		list( $response_headers, $response_body ) = Jetpack_Boost_Filecache::get_cached_response( $cdn_url, 'POST', 'css', $cdn_params );
 
 		if ( $response_body ) {
+			error_log("got cached crticial CSS!");
 			echo '<style id="jetpack-boost-critical-css" type="text/css">' . "\n";
 			echo $response_body; // TODO: sanitize response!!! Someone might write a malicious file to disk...
 			echo "\n</style>";
@@ -44,7 +45,7 @@ class Jetpack_Boost_Critical_CSS {
 
 	function get_cdn_params_for_current_page() {
 		global $wp;
-		$current_url = home_url( add_query_arg( array(), $wp->request ) );
+		$current_url = home_url( add_query_arg( $_GET, $wp->request ) );
 		$cdn_server = apply_filters( 'jetpack_boost_cdn_url', 'http://localhost:8090' );
 		$cdn_params = [ 'url' => $current_url ];
 		$cdn_url = $cdn_server . '/critical';
