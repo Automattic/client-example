@@ -28,12 +28,13 @@ $auth_url = $this->manager->get_authorization_url( null, admin_url( '?page=clien
 <p>This is the first step and prerequisite for any Jetpack connection. "Registering" the site basically means creating a blog token,
 	and "registering" the site with wpcom. It is required before any user authentication can proceed.</p>
 <strong>Current site registration status: </strong>
+
 <?php if ( ! $blog_token ) : ?>
 	<p>Unregistered :(</p>
 	<form action="/wp-admin/admin-post.php" method="post">
 		<input type="hidden" name="action" value="register_site">
 		<?php wp_nonce_field( 'register-site' ); ?>
-		<input type="submit" value="Register this site">
+		<input type="submit" value="Register this site" class="button button-primary">
 	</form>
 <?php else: ?>
 	<p>Woohoo! This site is registered with wpcom, and has a functioning blog token for authenticated site requests!
@@ -45,7 +46,7 @@ $auth_url = $this->manager->get_authorization_url( null, admin_url( '?page=clien
 			it will also delete any and all user tokens with it, since those rely on the blog token too!</p>
 		<input type="hidden" name="action" value="disconnect_site">
 		<?php wp_nonce_field( 'disconnect-site' ); ?>
-		<input type="submit" value="Disconnect site">
+		<input type="submit" value="Disconnect site" class="button">
 	</form>
 <?php endif; ?>
 <br>
@@ -54,7 +55,7 @@ $auth_url = $this->manager->get_authorization_url( null, admin_url( '?page=clien
 <?php if ( $blog_token ) : ?>
 	<p>Now that we have a registered site, we can authenticate users!</p>
 <?php else: ?>
-	<p>Wait! Before we do any user authentication, we need to register the site above! You can try it if you want, but you'll get some errors :)</p>
+	<p><strong>Wait! Before we do any user authentication, we need to register the site above!</strong> You can try it if you want, but you'll get some errors :)</p>
 <?php endif; ?>
 
 <?php if ( $user_token ) : ?>
@@ -63,14 +64,27 @@ $auth_url = $this->manager->get_authorization_url( null, admin_url( '?page=clien
 		<p><strong>Unless...</strong> you are also the "master user", in which case it will fail (we could use some error handling instead)</p>
 		<input type="hidden" name="action" value="disconnect_user">
 		<?php wp_nonce_field( 'disconnect-user' ); ?>
-		<input type="submit" value="Disconnect current user">
+		<input type="submit" value="Disconnect current user" class="button">
 	</form>
 <?php else: ?>
 	<form action="/wp-admin/admin-post.php" method="post">
 		<input type="hidden" name="action" value="connect_user">
 		<?php wp_nonce_field( 'connect-user' ); ?>
-		<input type="submit" value="Connect current user">
+		<input type="submit" value="Authorize current user" class="button <?php echo ! $blog_token ? 'button-primary-disabled' : 'button-primary'; ?>">
+		<label for="connect_user">Classic flow through wp.com</label>
 	</form>
+
+	<br>
+	<p>OR! You can try this fancy in-place authorize flow in an iframe. But remember, you need to register the site first.</p>
+	<iframe
+			class="jp-jetpack-connect__iframe"
+			style="
+				width: 100%;
+				background: white;
+				height: 250px;
+				padding-top: 30px;
+			"
+	/></iframe>
 <?php endif; ?>
 
 <br>
@@ -89,7 +103,6 @@ $auth_url = $this->manager->get_authorization_url( null, admin_url( '?page=clien
 <?php print_r( get_option( 'jetpack_private_options', array() ) ); ?>
 </pre>
 
-<iframe class="jp-jetpack-connect__iframe" /></iframe>
 <script type="application/javascript">
 jQuery( function( $ ) {
 	var authorize_url = <?php echo wp_json_encode( $auth_url ); ?>;
