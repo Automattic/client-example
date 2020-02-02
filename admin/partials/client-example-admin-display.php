@@ -49,42 +49,43 @@ $auth_url = $this->manager->get_authorization_url( null, admin_url( '?page=clien
 		<input type="submit" value="Disconnect site" class="button">
 	</form>
 <?php endif; ?>
+
 <br>
 <h2>User auth / user token creation.</h2>
 <hr />
 <?php if ( $blog_token ) : ?>
 	<p>Now that we have a registered site, we can authenticate users!</p>
-<?php else: ?>
-	<p><strong>Wait! Before we do any user authentication, we need to register the site above!</strong> You can try it if you want, but you'll get some errors :)</p>
-<?php endif; ?>
 
-<?php if ( $user_token ) : ?>
-	<form action="/wp-admin/admin-post.php" method="post">
-		<p>Awesome! You are connected as an authenticated user! You even have your own token! much wow. Now you may destroy it :)</p>
-		<p><strong>Unless...</strong> you are also the "master user", in which case it will fail (we could use some error handling instead)</p>
-		<input type="hidden" name="action" value="disconnect_user">
-		<?php wp_nonce_field( 'disconnect-user' ); ?>
-		<input type="submit" value="Disconnect current user" class="button">
-	</form>
-<?php else: ?>
-	<form action="/wp-admin/admin-post.php" method="post">
-		<input type="hidden" name="action" value="connect_user">
-		<?php wp_nonce_field( 'connect-user' ); ?>
-		<input type="submit" value="Authorize current user" class="button <?php echo ! $blog_token ? 'button-primary-disabled' : 'button-primary'; ?>">
-		<label for="connect_user">Classic flow through wp.com</label>
-	</form>
+	<?php if ( $user_token ) : ?>
+		<form action="/wp-admin/admin-post.php" method="post">
+			<p>Awesome! You are connected as an authenticated user! You even have your own token! much wow. Now you may destroy it :)</p>
+			<p><strong>Unless...</strong> you are also the "master user", in which case it will fail (we could use some error handling instead)</p>
+			<input type="hidden" name="action" value="disconnect_user">
+			<?php wp_nonce_field( 'disconnect-user' ); ?>
+			<input type="submit" value="Disconnect current user" class="button">
+		</form>
+	<?php else: ?>
+		<form action="/wp-admin/admin-post.php" method="post">
+			<input type="hidden" name="action" value="connect_user">
+			<?php wp_nonce_field( 'connect-user' ); ?>
+			<input type="submit" value="Authorize current user" class="button button-primary">
+			<label for="connect_user">Classic flow through wp.com</label>
+		</form>
 
-	<br>
-	<p>OR! You can try this fancy in-place authorize flow in an iframe. But remember, you need to register the site first.</p>
-	<iframe
-			class="jp-jetpack-connect__iframe"
-			style="
-				width: 100%;
-				background: white;
-				height: 250px;
-				padding-top: 30px;
-			"
-	/></iframe>
+		<br>
+		<p>OR! You can try this fancy in-place authorize flow in an iframe. But remember, you need to register the site first.</p>
+		<iframe
+				class="jp-jetpack-connect__iframe"
+				style="
+					width: 100%;
+					background: white;
+					height: 250px;
+					padding-top: 30px;
+				"
+		/></iframe>
+	<?php endif; ?>
+<?php else: ?>
+	<p><strong>Wait! Before we do any user authentication, we need to register the site above!</strong></p>
 <?php endif; ?>
 
 <br>
