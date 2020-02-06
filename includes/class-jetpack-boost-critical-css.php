@@ -23,9 +23,15 @@ class Jetpack_Boost_Critical_CSS {
 		// detect enabled with:
 		// apply_filters( 'jetpack_boost_inject_critical_css', false )
 		add_action('wp_head', array( $this, 'inject_critical_css' ), 0 );
+		add_filter( 'jetpack_boost_inject_critical_css', '__return_true' );
 	}
 
 	function inject_critical_css() {
+		// critical CSS blows up our CSS size
+		if ( function_exists( 'is_amp_endpoint' ) && is_amp_endpoint() ) {
+			return;
+		}
+
 		// fetch critical CSS - this must be done in a background job or we might
 		// end up in a loop where every request to a URL triggers a request from our server to
 		// the URL which tries again to get the URL...
