@@ -65,8 +65,6 @@ class Client_Example_Admin {
 				return wp_generate_password( 32, false );
 			};
 		} );
-
-		add_filter( 'jetpack_use_iframe_authorization_flow', '__return_true' );
 	}
 
 	/**

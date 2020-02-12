@@ -14,7 +14,9 @@
 
 $user_token = $this->manager->get_access_token( get_current_user_id() );
 $blog_token = $this->manager->get_access_token();
+add_filter( 'jetpack_use_iframe_authorization_flow', '__return_true' );
 $auth_url = $this->manager->get_authorization_url( null, admin_url( '?page=client-example' ) );
+remove_filter( 'jetpack_use_iframe_authorization_flow', '__return_true' );
 ?>
 
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->
