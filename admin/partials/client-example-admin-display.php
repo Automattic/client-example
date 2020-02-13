@@ -108,7 +108,8 @@ remove_filter( 'jetpack_use_iframe_authorization_flow', '__return_true' );
 
 <script type="application/javascript">
 jQuery( function( $ ) {
-	var authorize_url = <?php echo wp_json_encode( $auth_url ); ?>;
+
+	var authorize_url = decodeURIComponent( '<?php echo rawurlencode( (string) $auth_url ); ?>' );
 	$( '.jp-jetpack-connect__iframe' ).attr( 'src', authorize_url );
 
 	window.addEventListener('message', (event) => {
