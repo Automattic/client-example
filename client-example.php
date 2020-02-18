@@ -83,6 +83,10 @@ function run_client_example() {
 	// Here we enable the Jetpack packages.
 	$config = new Config();
 	$config->ensure( 'connection' );
+//	$config->ensure( 'sync' );
+	if ( is_admin() ) {
+		$config->ensure( 'jitm' );
+	}
 
 	$jetpack_connection_manager = new Manager();
 	$plugin = new Client_Example( $jetpack_connection_manager );

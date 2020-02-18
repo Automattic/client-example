@@ -4,8 +4,43 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "053253d02ca265dcaa97377fc0a5b06a",
+    "content-hash": "00239647cb22e586ae8b2fa50bb7937a",
     "packages": [
+        {
+            "name": "automattic/jetpack-assets",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Automattic/jetpack-assets.git",
+                "reference": "4a42dcf7f7fd8954a89294b4d4eac8988cbf0588"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Automattic/jetpack-assets/zipball/4a42dcf7f7fd8954a89294b4d4eac8988cbf0588",
+                "reference": "4a42dcf7f7fd8954a89294b4d4eac8988cbf0588",
+                "shasum": ""
+            },
+            "require": {
+                "automattic/jetpack-constants": "@dev"
+            },
+            "require-dev": {
+                "brain/monkey": "^2.4",
+                "php-mock/php-mock": "^2.1",
+                "phpunit/phpunit": "^5.7 || ^6.5 || ^7.5"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "description": "Asset management utilities for Jetpack ecosystem packages",
+            "time": "2020-01-14T16:51:42+00:00"
+        },
         {
             "name": "automattic/jetpack-autoloader",
             "version": "dev-master",
@@ -140,6 +175,77 @@
             "time": "2019-11-08T21:16:05+00:00"
         },
         {
+            "name": "automattic/jetpack-jitm",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Automattic/jetpack-jitm.git",
+                "reference": "3d8419a38d5ea45c174f98a30e0420011e4bc01c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Automattic/jetpack-jitm/zipball/3d8419a38d5ea45c174f98a30e0420011e4bc01c",
+                "reference": "3d8419a38d5ea45c174f98a30e0420011e4bc01c",
+                "shasum": ""
+            },
+            "require": {
+                "automattic/jetpack-assets": "@dev",
+                "automattic/jetpack-connection": "@dev",
+                "automattic/jetpack-constants": "@dev",
+                "automattic/jetpack-logo": "@dev",
+                "automattic/jetpack-options": "@dev",
+                "automattic/jetpack-tracking": "@dev"
+            },
+            "require-dev": {
+                "mockery/mockery": "^1.2",
+                "php-mock/php-mock": "^2.1",
+                "phpunit/phpunit": "^5.7 || ^6.5 || ^7.5"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "description": "Just in time messages for Jetpack",
+            "time": "2020-01-21T22:42:22+00:00"
+        },
+        {
+            "name": "automattic/jetpack-logo",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Automattic/jetpack-logo.git",
+                "reference": "7da178a529f772cddfd0bbf1775eb30a852739c2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Automattic/jetpack-logo/zipball/7da178a529f772cddfd0bbf1775eb30a852739c2",
+                "reference": "7da178a529f772cddfd0bbf1775eb30a852739c2",
+                "shasum": ""
+            },
+            "require-dev": {
+                "php-mock/php-mock": "^2.1",
+                "phpunit/phpunit": "^5.7 || ^6.5 || ^7.5"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "description": "A logo for Jetpack",
+            "time": "2019-11-08T21:16:05+00:00"
+        },
+        {
             "name": "automattic/jetpack-options",
             "version": "dev-master",
             "source": {
@@ -237,6 +343,40 @@
             "time": "2020-01-27T11:04:11+00:00"
         },
         {
+            "name": "automattic/jetpack-sync",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Automattic/jetpack-sync.git",
+                "reference": "1f36cf9e135e7be61dc5f0da5c74dd360f866a1d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Automattic/jetpack-sync/zipball/1f36cf9e135e7be61dc5f0da5c74dd360f866a1d",
+                "reference": "1f36cf9e135e7be61dc5f0da5c74dd360f866a1d",
+                "shasum": ""
+            },
+            "require": {
+                "automattic/jetpack-connection": "@dev",
+                "automattic/jetpack-constants": "@dev",
+                "automattic/jetpack-options": "@dev",
+                "automattic/jetpack-roles": "@dev",
+                "automattic/jetpack-status": "@dev"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "description": "Everything needed to allow syncing to the WP.com infrastructure.",
+            "time": "2020-01-21T17:02:00+00:00"
+        },
+        {
             "name": "automattic/jetpack-terms-of-service",
             "version": "dev-master",
             "source": {
@@ -316,7 +456,9 @@
         "automattic/jetpack-autoloader": 20,
         "automattic/jetpack-connection": 20,
         "automattic/jetpack-tracking": 20,
-        "automattic/jetpack-config": 20
+        "automattic/jetpack-config": 20,
+        "automattic/jetpack-sync": 20,
+        "automattic/jetpack-jitm": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
