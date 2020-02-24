@@ -10,6 +10,8 @@
  * @subpackage Client_Example/admin
  */
 
+require_once plugin_dir_path( __FILE__ ) . 'simple-ui/class-connection-simple-ui-admin.php';
+
 /**
  * The admin-specific functionality of the plugin.
  *
@@ -54,6 +56,8 @@ class Client_Example_Admin {
 		$this->version = $version;
 		$this->manager = $manager;
 
+		$this->connection_admin = new Connection_Admin( $manager );
+
 		add_action( 'admin_menu', array( $this, 'admin_menu' ) );
 		add_action( 'admin_post_register_site', array( $this, 'register_site' ) );
 		add_action( 'admin_post_connect_user', array( $this, 'connect_user' ) );
@@ -81,7 +85,31 @@ class Client_Example_Admin {
 			'',
 			4
 		);
+
+		$hook_iframe = add_submenu_page(
+			'client-example',
+			'Client Example - Simple UI - Iframe',
+			'Simple UI with Iframe',
+			'manage_options',
+			'client-example-simple-ui-iframe',
+			array( $this, 'generate_simple_ui_iframe_menu' ),
+		);
+
+		add_action( "load-$hook_iframe", array( $this->connection_admin, 'admin_page_load' ) );
+
+		$hook_calypso = add_submenu_page(
+			'client-example',
+			'Client Example - Simple UI - Calypso',
+			'Simple UI with Calypso',
+			'manage_options',
+			'client-example-simple-ui-calypso',
+			array( $this, 'generate_simple_ui_calypso_menu' ),
+		);
+
+		add_action( "load-$hook_calypso", array( $this->connection_admin, 'admin_page_load' ) );
 	}
+
+
 
 	/**
 	 * Register the stylesheets for the admin area.
@@ -134,6 +162,29 @@ class Client_Example_Admin {
 	public function generate_menu() {
 		require plugin_dir_path( __FILE__ ) . '/partials/client-example-admin-display.php';
 	}
+
+	/**
+	 * Generate the simple ui page with the auth iframe.
+	 */
+	 public function generate_simple_ui_iframe_menu() {
+		 global $is_safari;
+		 if ( $is_safari ) {
+			 add_filter( 'jetpack_use_iframe_authorization_flow', '__return_false' );
+		 } else {
+			 add_filter( 'jetpack_use_iframe_authorization_flow', '__return_true' );
+		 }
+
+		 require plugin_dir_path( __FILE__ ) . '/simple-ui/client-example-admin-simple-ui-display-iframe.php';
+	 }
+
+	 /**
+	  * Generate the simple ui page with original auth.
+	  */
+	  public function generate_simple_ui_calypso_menu() {
+
+		  add_filter( 'jetpack_use_iframe_authorization_flow', '__return_false' );
+		  require plugin_dir_path( __FILE__ ) . '/simple-ui/client-example-admin-simple-ui-display-calypso.php';
+	 }
 
 	/**
 	 * Registers the site using the connection package.
