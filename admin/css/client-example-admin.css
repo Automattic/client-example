@@ -2,3 +2,28 @@
  * All of the CSS for your admin-specific functionality should be
  * included in this file.
  */
+
+div.simple-ui {
+	background-color: #fff;
+	line-height: normal;
+	text-align: center;
+	padding: 25px 15px;
+	width: 50%;
+	min-width: 300px;
+	margin: 50px auto;
+	border: 1px solid #0071a1;
+	border-radius: 8px;
+}
+
+h1.simple-ui {
+	margin-top: 0px;
+}
+
+div.simple-ui .jp-jetpack-connect__iframe {
+	height: 250px;
+}
+
+.simple-ui #jetpack-logo__icon {
+	width: 100px;
+	height: 100px;
+}
