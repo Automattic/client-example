@@ -58,7 +58,7 @@
 			$action = $this->connection_admin->get_post_action();
 			?>
 
-			<form action="/wp-admin/admin-post.php" method="post">
+			<form action="<?php echo admin_url( 'admin-post.php' ); ?>" method="post">
 				<input type="hidden" name="action" value="<?php echo $action; ?>">
 				<?php wp_nonce_field( $action ); ?>
 				<input type="submit" value="<?php echo $text; ?>" class="button button-primary">
@@ -79,7 +79,7 @@
 		?>
 
 		<br>
-		<form action="/wp-admin/admin-post.php" method="post">
+		<form action="<?php echo admin_url( 'admin-post.php' ); ?>" method="post">
 			<input type="hidden" name="action" value="<?php echo $action; ?>">
 			<?php wp_nonce_field( $action ); ?>
 			<input type="submit" value="Disconnect User" class="button">
@@ -94,7 +94,7 @@
 		?>
 
 		<br>
-		<form action="/wp-admin/admin-post.php" method="post">
+		<form action="<?php echo admin_url( 'admin-post.php' ); ?>" method="post">
 			<input type="hidden" name="action" value="<?php echo $action; ?>">
 			<?php wp_nonce_field( $action ); ?>
 			<input type="submit" value="Disconnect Site" class="button">

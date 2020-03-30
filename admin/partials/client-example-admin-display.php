@@ -33,7 +33,7 @@ remove_filter( 'jetpack_use_iframe_authorization_flow', '__return_true' );
 
 <?php if ( ! $blog_token ) : ?>
 	<p>Unregistered :(</p>
-	<form action="/wp-admin/admin-post.php" method="post">
+	<form action="<?php echo admin_url( 'admin-post.php' ); ?>" method="post">
 		<input type="hidden" name="action" value="register_site">
 		<?php wp_nonce_field( 'register-site' ); ?>
 		<input type="submit" value="Register this site" class="button button-primary">
@@ -42,7 +42,7 @@ remove_filter( 'jetpack_use_iframe_authorization_flow', '__return_true' );
 	<p>Woohoo! This site is registered with wpcom, and has a functioning blog token for authenticated site requests!
 		You should be able to see the token value in the Private Options dump lower in this page.</p>
 
-	<form action="/wp-admin/admin-post.php" method="post">
+	<form action="<?php echo admin_url( 'admin-post.php' ); ?>" method="post">
 		<strong>Disconnect / deregister</strong>
 		<p>Now that the site is registered, you may de-register (disconnect) it! Be weary though,
 			it will also delete any and all user tokens with it, since those rely on the blog token too!</p>
@@ -59,7 +59,7 @@ remove_filter( 'jetpack_use_iframe_authorization_flow', '__return_true' );
 	<p>Now that we have a registered site, we can authenticate users!</p>
 
 	<?php if ( $user_token ) : ?>
-		<form action="/wp-admin/admin-post.php" method="post">
+		<form action="<?php echo admin_url( 'admin-post.php' ); ?>" method="post">
 			<p>Awesome! You are connected as an authenticated user! You even have your own token! much wow. Now you may destroy it :)</p>
 			<p><strong>Unless...</strong> you are also the "master user", in which case it will fail (we could use some error handling instead)</p>
 			<input type="hidden" name="action" value="disconnect_user">
@@ -67,7 +67,7 @@ remove_filter( 'jetpack_use_iframe_authorization_flow', '__return_true' );
 			<input type="submit" value="Disconnect current user" class="button">
 		</form>
 	<?php else: ?>
-		<form action="/wp-admin/admin-post.php" method="post">
+		<form action="<?php echo admin_url( 'admin-post.php' ); ?>" method="post">
 			<input type="hidden" name="action" value="connect_user">
 			<?php wp_nonce_field( 'connect-user' ); ?>
 			<input type="submit" value="Authorize current user" class="button button-primary">
