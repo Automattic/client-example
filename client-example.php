@@ -40,6 +40,16 @@ if ( ! defined( 'WPINC' ) ) {
  */
 define( 'CLIENT_EXAMPLE_VERSION', '1.0.0' );
 
+/**
+ * The plugin name.
+ */
+define( 'CLIENT_EXAMPLE_NAME', 'Jetpack Client Example' );
+
+/**
+ * The plugin slug.
+ */
+define( 'CLIENT_EXAMPLE_SLUG', 'client-example' );
+
 require_once plugin_dir_path( __FILE__ ) . '/vendor/autoload_packages.php';
 
 /**
@@ -82,9 +92,16 @@ function run_client_example() {
 
 	// Here we enable the Jetpack packages.
 	$config = new Config();
-	$config->ensure( 'connection' );
+	$config->ensure(
+		'connection',
+		array(
+			'slug'     => CLIENT_EXAMPLE_SLUG,
+			'name'     => CLIENT_EXAMPLE_NAME,
+			'url_info' => 'https://github.com/Automattic/client-example'
+		)
+	);
 
-	$jetpack_connection_manager = new Manager();
+	$jetpack_connection_manager = new Manager( CLIENT_EXAMPLE_SLUG );
 	$plugin = new Client_Example( $jetpack_connection_manager );
 
 	$plugin->run();

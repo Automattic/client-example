@@ -12,7 +12,13 @@ class Register_Iframe_Method {
 
 	public function register_site() {
 		check_admin_referer( self::POST_ACTION );
-		$result = $this->connection_admin->manager->register();
+
+		$this->connection_admin->manager->enable_plugin();
+
+		if ( ! $this->connection_admin->manager->get_access_token() ) {
+			$result = $this->connection_admin->manager->register();
+		}
+
 		$this->connection_admin->check_for_error_and_redirect( $result );
 	}
 }
