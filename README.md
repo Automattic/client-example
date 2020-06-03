@@ -4,6 +4,20 @@ In order to use some functionality provided by WordPress.com and used by Jetpack
 
 # Building and Developing the plugin
 
+## Making your development site publicly available
+
+This plugin, like Jetpack itself, requires that your site has a public address on the internet. Assuming you are developing on a laptop or desktop machine (rather than a server with its own existing public address), this means you need a tool like `ngrok` in order to "tunnel" from a public address (e.g. mysubdomain.ngrok.io) to your development machine.
+
+On my laptop, I create a tunnel to my development site (running on Local by Flywheel) like this:
+
+```bash
+$ ngrok http -subdomain=goldsounds3 80
+```
+
+My site also needs to have its public URL set to http://goldsounds3.ngrok.io
+
+## Building the plugin
+
 Check out the code into your plugins directory:
 
 ```bash
@@ -18,6 +32,20 @@ $ composer install
 ```
 
 Now activate the plugin in wp-admin of your development site.
+
+You can then navigate to the "Client Example" menu item in wp-admin.
+
+## Troubleshooting / FAQ
+
+### The Jetpack server was unable to communicate with your site
+
+When you try to connect, you might see this error:
+
+```
+The Jetpack server was unable to communicate with your site http://goldsounds3.ngrok.io [HTTP 404]. Ask your web host if they allow connections from WordPress.com. If you need further assistance, contact Jetpack Support: http://jetpack.com/support/
+```
+
+This means you don't have a correct public address that allows WordPress.com servers to access your machine. Double check your tunnelling configuration, and if possible confirm your site is publicly accessible by pinging or using `curl` from the shell of another computer on the internet.
 
 # What it does
 
