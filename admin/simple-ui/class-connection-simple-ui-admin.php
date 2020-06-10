@@ -8,9 +8,9 @@ require_once plugin_dir_path( __FILE__ ) . 'register-methods/class-register-caly
 
 class Connection_Admin {
 
-	public const AUTH_POST_ACTION            = 'authorize_user_simple_ui';
-	public const DISCONNECT_USER_POST_ACTION = 'disconnect_user_simple_ui';
-	public const DISCONNECT_SITE_POST_ACTION = 'disconnect_site_simple_ui';
+	const AUTH_POST_ACTION            = 'authorize_user_simple_ui';
+	const DISCONNECT_USER_POST_ACTION = 'disconnect_user_simple_ui';
+	const DISCONNECT_SITE_POST_ACTION = 'disconnect_site_simple_ui';
 
 	private $registering_state;
 	private $authorizing_state;
@@ -27,8 +27,8 @@ class Connection_Admin {
 	public function __construct( $manager ) {
 		$this->manager = $manager;
 
-		$this->registering_state  = new Registering_State( $this );
-		$this->authorizing_state  = new Authorizing_State( $this );
+		$this->registering_state = new Registering_State( $this );
+		$this->authorizing_state = new Authorizing_State( $this );
 		$this->connected_state   = new Connected_State();
 
 		$this->register_iframe_method  = new Register_Iframe_Method( $this );
@@ -46,11 +46,17 @@ class Connection_Admin {
 	}
 
 	private function set_up_post_request_handlers() {
-		add_action( 'admin_post_' . $this->register_iframe_method::POST_ACTION,
-			array( $this->register_iframe_method, 'register_site' ) );
+		$iframe_register = $this->register_iframe_method;
+		add_action(
+			'admin_post_' . $iframe_register::POST_ACTION,
+			array( $this->register_iframe_method, 'register_site' )
+		);
 
-		add_action( 'admin_post_' . $this->register_calypso_method::POST_ACTION,
-			array( $this->register_calypso_method, 'register_site' ) );
+		$calypso_register = $this->register_calypso_method;
+		add_action(
+			'admin_post_' . $calypso_register::POST_ACTION,
+			array( $this->register_calypso_method, 'register_site' )
+		);
 
 		add_action( 'admin_post_' . self::AUTH_POST_ACTION, array( $this, 'authorize_user' ) );
 		add_action( 'admin_post_' . self::DISCONNECT_USER_POST_ACTION, array( $this, 'disconnect_user' ) );

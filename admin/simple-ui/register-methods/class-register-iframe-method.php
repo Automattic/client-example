@@ -2,7 +2,7 @@
 
 class Register_Iframe_Method {
 
-	public const POST_ACTION = 'register_site_iframe';
+	const POST_ACTION = 'register_site_iframe';
 
 	private $connection_admin;
 

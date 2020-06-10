@@ -2,7 +2,7 @@
 
 class Register_Calypso_Method {
 
-	public const POST_ACTION = 'register_site_calypso';
+	const POST_ACTION = 'register_site_calypso';
 
 	private $connection_admin;
 
