@@ -133,7 +133,7 @@ remove_filter( 'jetpack_use_iframe_authorization_flow', '__return_true' );
 <hr />
 <p>These plugins were explicitly disconnected by calling `$manager->disable_plugin()`.</p>
 <pre>
-<?php print_r( get_option( 'jetpack_connection_plugins_disabled', array() ) ); ?>
+<?php print_r( get_option( 'jetpack_connection_disabled_plugins', array() ) ); ?>
 </pre>
 
 <script type="application/javascript">

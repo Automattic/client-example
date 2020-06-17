@@ -115,10 +115,7 @@ class Connection_Admin {
 	public function disconnect_site() {
 		check_admin_referer( self::DISCONNECT_SITE_POST_ACTION );
 
-		$this->manager->disable_plugin();
-
-		$this->manager->disconnect_site_wpcom();
-		$this->manager->delete_all_connection_tokens();
+		$this->manager->remove_connection();
 
 		$this->check_for_error_and_redirect( null );
 	}
