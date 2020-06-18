@@ -15,6 +15,6 @@
         "automattic/jetpack-connection": "dev-master",
         "automattic/jetpack-tracking": "dev-master",
         "automattic/jetpack-config": "dev-master",
-        "automattic/jetpack-sync": "dev-master"
+        "automattic/jetpack-sync": "dev-master#80c4872fee73b0f7f853f1b514b29bcad636fa99"
     }
 }
