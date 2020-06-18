@@ -92,7 +92,7 @@ class Client_Example_Admin {
 			'Simple UI with Iframe',
 			'manage_options',
 			'client-example-simple-ui-iframe',
-			array( $this, 'generate_simple_ui_iframe_menu' ),
+			array( $this, 'generate_simple_ui_iframe_menu' )
 		);
 
 		add_action( "load-$hook_iframe", array( $this->connection_admin, 'admin_page_load' ) );
@@ -103,7 +103,7 @@ class Client_Example_Admin {
 			'Simple UI with Calypso',
 			'manage_options',
 			'client-example-simple-ui-calypso',
-			array( $this, 'generate_simple_ui_calypso_menu' ),
+			array( $this, 'generate_simple_ui_calypso_menu' )
 		);
 
 		add_action( "load-$hook_calypso", array( $this->connection_admin, 'admin_page_load' ) );
