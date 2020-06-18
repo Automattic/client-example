@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "053253d02ca265dcaa97377fc0a5b06a",
+    "content-hash": "afe9065d2ffe6d5adde1836d310e685e",
     "packages": [
         {
             "name": "automattic/jetpack-autoloader",
@@ -48,12 +48,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Automattic/jetpack-config.git",
-                "reference": "df7cfce4231fb50e8cd433a6ccf52e99a269c16c"
+                "reference": "4c6ea210ba8fa60f43f0d9eb725f70450f0ba210"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Automattic/jetpack-config/zipball/df7cfce4231fb50e8cd433a6ccf52e99a269c16c",
-                "reference": "df7cfce4231fb50e8cd433a6ccf52e99a269c16c",
+                "url": "https://api.github.com/repos/Automattic/jetpack-config/zipball/4c6ea210ba8fa60f43f0d9eb725f70450f0ba210",
+                "reference": "4c6ea210ba8fa60f43f0d9eb725f70450f0ba210",
                 "shasum": ""
             },
             "type": "library",
@@ -67,7 +67,7 @@
                 "GPL-2.0-or-later"
             ],
             "description": "Jetpack configuration package that initializes other packages and configures Jetpack's functionality. Can be used as a base for all variants of Jetpack package usage.",
-            "time": "2020-01-21T22:42:22+00:00"
+            "time": "2020-05-20T20:52:06+00:00"
         },
         {
             "name": "automattic/jetpack-connection",
@@ -75,12 +75,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Automattic/jetpack-connection.git",
-                "reference": "21256f240360a5f9f687e9bb103182b3a695777d"
+                "reference": "ecc80bb6a61331ed71a7a1ee4d2749160259e99a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Automattic/jetpack-connection/zipball/21256f240360a5f9f687e9bb103182b3a695777d",
-                "reference": "21256f240360a5f9f687e9bb103182b3a695777d",
+                "url": "https://api.github.com/repos/Automattic/jetpack-connection/zipball/ecc80bb6a61331ed71a7a1ee4d2749160259e99a",
+                "reference": "ecc80bb6a61331ed71a7a1ee4d2749160259e99a",
                 "shasum": ""
             },
             "require": {
@@ -107,7 +107,7 @@
                 "GPL-2.0-or-later"
             ],
             "description": "Everything needed to connect to the Jetpack infrastructure",
-            "time": "2020-04-28T07:34:58+00:00"
+            "time": "2020-06-03T22:16:06+00:00"
         },
         {
             "name": "automattic/jetpack-constants",
@@ -146,12 +146,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Automattic/jetpack-options.git",
-                "reference": "f3c6fc5e7eba07a8d1078aab643a64a5e656e5ab"
+                "reference": "546ab5685153e54c535a415562e5274509d52007"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Automattic/jetpack-options/zipball/f3c6fc5e7eba07a8d1078aab643a64a5e656e5ab",
-                "reference": "f3c6fc5e7eba07a8d1078aab643a64a5e656e5ab",
+                "url": "https://api.github.com/repos/Automattic/jetpack-options/zipball/546ab5685153e54c535a415562e5274509d52007",
+                "reference": "546ab5685153e54c535a415562e5274509d52007",
                 "shasum": ""
             },
             "require": {
@@ -172,7 +172,7 @@
                 "GPL-2.0-or-later"
             ],
             "description": "A wrapper for wp-options to manage specific Jetpack options.",
-            "time": "2020-04-29T15:57:28+00:00"
+            "time": "2020-05-26T09:20:45+00:00"
         },
         {
             "name": "automattic/jetpack-roles",
@@ -236,6 +236,40 @@
             ],
             "description": "Used to retrieve information about the current status of Jetpack and the site overall.",
             "time": "2020-01-27T11:04:11+00:00"
+        },
+        {
+            "name": "automattic/jetpack-sync",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Automattic/jetpack-sync.git",
+                "reference": "0a03bfede037dc465fb382ebedaf32e62973fbd2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Automattic/jetpack-sync/zipball/0a03bfede037dc465fb382ebedaf32e62973fbd2",
+                "reference": "0a03bfede037dc465fb382ebedaf32e62973fbd2",
+                "shasum": ""
+            },
+            "require": {
+                "automattic/jetpack-connection": "@dev",
+                "automattic/jetpack-constants": "@dev",
+                "automattic/jetpack-options": "@dev",
+                "automattic/jetpack-roles": "@dev",
+                "automattic/jetpack-status": "@dev"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "description": "Everything needed to allow syncing to the WP.com infrastructure.",
+            "time": "2020-06-02T21:24:48+00:00"
         },
         {
             "name": "automattic/jetpack-terms-of-service",
@@ -317,7 +351,8 @@
         "automattic/jetpack-autoloader": 20,
         "automattic/jetpack-connection": 20,
         "automattic/jetpack-tracking": 20,
-        "automattic/jetpack-config": 20
+        "automattic/jetpack-config": 20,
+        "automattic/jetpack-sync": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
