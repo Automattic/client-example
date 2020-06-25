@@ -60,6 +60,7 @@ class Client_Example_Admin {
 
 		add_action( 'admin_menu', array( $this, 'admin_menu' ) );
 		add_action( 'admin_post_register_site', array( $this, 'register_site' ) );
+		add_action( 'admin_post_connect_site_softly', array( $this, 'connect_site_softly' ) );
 		add_action( 'admin_post_connect_user', array( $this, 'connect_user' ) );
 		add_action( 'admin_post_disconnect_user', array( $this, 'disconnect_user' ) );
 		add_action( 'admin_post_disconnect_site', array( $this, 'disconnect_site' ) );
@@ -191,7 +192,23 @@ class Client_Example_Admin {
 	 */
 	public function register_site() {
 		check_admin_referer( 'register-site' );
+
+		$this->manager->enable_plugin();
 		$this->manager->register();
+
+		if ( wp_get_referer() ) {
+			wp_safe_redirect( wp_get_referer() );
+		} else {
+			wp_safe_redirect( get_home_url() );
+		}
+	}
+
+	/**
+	 * Reconnects after "soft disconnect".
+	 */
+	public function connect_site_softly() {
+		check_admin_referer( 'connect-site-user-initiated' );
+		$this->manager->enable_plugin();
 
 		if ( wp_get_referer() ) {
 			wp_safe_redirect( wp_get_referer() );
@@ -233,8 +250,25 @@ class Client_Example_Admin {
 	 */
 	public function disconnect_site() {
 		check_admin_referer( 'disconnect-site' );
-		$this->manager->disconnect_site_wpcom();
-		$this->manager->delete_all_connection_tokens();
+
+		$disconnect_type = empty( $_POST['disconnect_soft'] )
+			? ( empty( $_POST['disconnect_hard'] ) ? null : 'hard' )
+			: 'soft';
+
+		$this->manager->disable_plugin();
+
+		switch ( $disconnect_type ) {
+			case 'soft':
+				// The function `disable_plugin()` has already been called, soft disconnect completed.
+				break;
+			case 'hard':
+				$this->manager->disconnect_site_wpcom( true );
+				$this->manager->delete_all_connection_tokens( true );
+				break;
+			default:
+				$this->manager->disconnect_site_wpcom();
+				$this->manager->delete_all_connection_tokens();
+		}
 
 		if ( wp_get_referer() ) {
 			wp_safe_redirect( wp_get_referer() );

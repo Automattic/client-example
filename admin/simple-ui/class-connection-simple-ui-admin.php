@@ -58,7 +58,7 @@ class Connection_Admin {
 	}
 
 	private function set_state() {
-		$registered = $this->manager->get_access_token();
+		$registered = $this->manager->get_access_token() && $this->manager->is_plugin_enabled();
 		$authorized = $this->manager->is_user_connected();
 
 		if ( ! $registered ) {
@@ -114,8 +114,9 @@ class Connection_Admin {
 
 	public function disconnect_site() {
 		check_admin_referer( self::DISCONNECT_SITE_POST_ACTION );
-		$this->manager->disconnect_site_wpcom();
-		$this->manager->delete_all_connection_tokens();
+
+		$this->manager->remove_connection();
+
 		$this->check_for_error_and_redirect( null );
 	}
 

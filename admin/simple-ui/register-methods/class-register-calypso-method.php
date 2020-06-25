@@ -12,13 +12,23 @@ class Register_Calypso_Method {
 
 	public function register_site() {
 		check_admin_referer( self::POST_ACTION );
-		$result = $this->connection_admin->manager->register();
+
+		$result = null;
+
+		$this->connection_admin->manager->enable_plugin();
+
+		if ( ! $this->connection_admin->manager->get_access_token() ) {
+			$result = $this->connection_admin->manager->register();
+		}
 
 		if ( is_wp_error( $result ) ) {
 			$this->connection_admin->check_for_error_and_redirect( $result );
 		}
 
-		$result = $this->connection_admin->manager->connect_user();
+		if ( ! $this->connection_admin->manager->is_user_connected() ) {
+			$result = $this->connection_admin->manager->connect_user();
+		}
+
 		$this->connection_admin->check_for_error_and_redirect( $result );
 	}
 }
