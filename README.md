@@ -22,7 +22,7 @@ Check out the code into your plugins directory:
 
 ```bash
 $ cd my-site/wp-content/plugins
-$ git clone git clone git@github.com:Automattic/client-example.git
+$ git clone git@github.com:Automattic/client-example.git
 ```
 
 Install the dependencies:
