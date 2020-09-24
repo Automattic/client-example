@@ -2,6 +2,7 @@
 
 use Automattic\Jetpack\Config;
 use Automattic\Jetpack\Connection\Manager;
+use Automattic\Jetpack\Connection\Rest_Authentication as Connection_Rest_Authentication;
 
 /**
  * The plugin bootstrap file
@@ -108,3 +109,6 @@ function run_client_example() {
 }
 
 add_action( 'plugins_loaded', 'run_client_example', 1 );
+
+// Set up the REST authentication hooks.
+Connection_Rest_Authentication::init();
