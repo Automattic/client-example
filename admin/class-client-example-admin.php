@@ -10,6 +10,8 @@
  * @subpackage Client_Example/admin
  */
 
+use Automattic\Jetpack\Terms_Of_Service;
+
 require_once plugin_dir_path( __FILE__ ) . 'simple-ui/class-connection-simple-ui-admin.php';
 
 /**
@@ -192,6 +194,8 @@ class Client_Example_Admin {
 	 */
 	public function register_site() {
 		check_admin_referer( 'register-site' );
+
+		( new Terms_Of_Service() )->agree();
 
 		$this->manager->enable_plugin();
 		$this->manager->register();
