@@ -97,7 +97,6 @@ function run_client_example() {
 		array(
 			'connection' => array(
 				'deactivate_disconnect' => true,
-				'tos_link'              => true,
 			)
 		),
 		array(

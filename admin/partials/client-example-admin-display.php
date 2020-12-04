@@ -12,8 +12,10 @@
  * @subpackage Client_Example/admin/partials
  */
 
-$user_token = $this->manager->get_access_token( get_current_user_id() );
-$blog_token = $this->manager->get_access_token();
+use Automattic\Jetpack\Terms_Of_Service;
+
+$user_token        = $this->manager->get_access_token( get_current_user_id() );
+$blog_token        = $this->manager->get_access_token();
 $is_plugin_enabled = $this->manager->is_plugin_enabled();
 add_filter( 'jetpack_use_iframe_authorization_flow', '__return_true' );
 $auth_url = $this->manager->get_authorization_url( null, admin_url( '?page=client-example' ) );
@@ -35,6 +37,11 @@ remove_filter( 'jetpack_use_iframe_authorization_flow', '__return_true' );
 </ul>
 
 <br>
+<h2>TOS Accepted?</h2>
+<hr />
+<p><?php echo ( new Terms_Of_Service() )->has_agreed() ? '✅ Accepted' : '❌ Not accepted' ?></p>
+
+<br>
 <h2>Site Registration / Blog token</h2>
 <hr />
 <p>This is the first step and prerequisite for any Jetpack connection. "Registering" the site basically means creating a blog token,
@@ -47,6 +54,7 @@ remove_filter( 'jetpack_use_iframe_authorization_flow', '__return_true' );
 		<input type="hidden" name="action" value="register_site">
 		<?php wp_nonce_field( 'register-site' ); ?>
 		<input type="submit" value="Register this site" class="button button-primary">
+		<p><?php echo Terms_Of_Service::get_tos( __( 'Register', 'jetpack' ) ) ?></p>
 	</form>
 <?php elseif ( ! $is_plugin_enabled ) : ?>
 	<p>Softly Disconnected ¯\_(ツ)_/¯</p>
