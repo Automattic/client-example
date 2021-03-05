@@ -1,3 +1,33 @@
+# USING THIS BRANCH FOR TESTING
+
+This is a slightly modified version of this plugin to be used inside the jetpack monorepo.
+
+This allows us to test the connection using the latest versions of the packages as we develop them in the monorepo.
+
+* Clone this repo inside the `projects/plugins` folder
+* run `composer install`
+* Done
+
+Note: This is a temporary branch as we will incorporate it under the current dev tools we have
+
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+
+Original README:
 # What this plugin is for
 
 In order to use some functionality provided by WordPress.com and used by Jetpack, a connection between the site and WordPress.com is needed. The package providing connection capability is called jetpack-connection, and this plugin illustrates what needs to be done to use it.
