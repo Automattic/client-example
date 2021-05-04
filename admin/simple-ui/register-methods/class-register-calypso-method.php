@@ -1,5 +1,7 @@
 <?php
 
+use Automattic\Jetpack\Connection\Tokens;
+
 class Register_Calypso_Method {
 
 	const POST_ACTION = 'register_site_calypso';
@@ -17,7 +19,7 @@ class Register_Calypso_Method {
 
 		$this->connection_admin->manager->enable_plugin();
 
-		if ( ! $this->connection_admin->manager->get_access_token() ) {
+		if ( ! ( new Tokens() )->get_access_token() ) {
 			$result = $this->connection_admin->manager->register();
 		}
 

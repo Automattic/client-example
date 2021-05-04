@@ -12,8 +12,10 @@
  * @subpackage Client_Example/admin/partials
  */
 
-$user_token = $this->manager->get_access_token( get_current_user_id() );
-$blog_token = $this->manager->get_access_token();
+use Automattic\Jetpack\Connection\Tokens;
+
+$user_token = ( new Tokens() )->get_access_token( get_current_user_id() );
+$blog_token = ( new Tokens() )->get_access_token();
 $is_plugin_enabled = $this->manager->is_plugin_enabled();
 add_filter( 'jetpack_use_iframe_authorization_flow', '__return_true' );
 $auth_url = $this->manager->get_authorization_url( null, admin_url( '?page=client-example' ) );

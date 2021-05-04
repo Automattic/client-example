@@ -1,5 +1,7 @@
 <?php
 
+use Automattic\Jetpack\Connection\Tokens;
+
 require_once plugin_dir_path( __FILE__ ) . 'connection-states/class-registering-state.php';
 require_once plugin_dir_path( __FILE__ ) . 'connection-states/class-authorizing-state.php';
 require_once plugin_dir_path( __FILE__ ) . 'connection-states/class-connected-state.php';
@@ -64,7 +66,7 @@ class Connection_Admin {
 	}
 
 	private function set_state() {
-		$registered = $this->manager->get_access_token() && $this->manager->is_plugin_enabled();
+		$registered = ( new Tokens() )->get_access_token() && $this->manager->is_plugin_enabled();
 		$authorized = $this->manager->is_user_connected();
 
 		if ( ! $registered ) {
