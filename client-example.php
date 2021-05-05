@@ -3,6 +3,7 @@
 use Automattic\Jetpack\Config;
 use Automattic\Jetpack\Connection\Manager;
 use Automattic\Jetpack\Connection\Rest_Authentication as Connection_Rest_Authentication;
+use Automattic\Jetpack\Constants;
 
 /**
  * The plugin bootstrap file
@@ -91,6 +92,7 @@ require plugin_dir_path( __FILE__ ) . 'includes/class-client-example.php';
  */
 function run_client_example() {
 
+	Constants::set_constant( 'JETPACK__WPCOM_JSON_API_BASE', 'https://public-api.wordpress.com' );
 	// Here we enable the Jetpack packages.
 	$config = new Config();
 	$config->ensure(
@@ -101,6 +103,8 @@ function run_client_example() {
 			'url_info' => 'https://github.com/Automattic/client-example'
 		)
 	);
+
+	$config->ensure( 'jitm' );
 
 	$jetpack_connection_manager = new Manager( CLIENT_EXAMPLE_SLUG );
 	$plugin = new Client_Example( $jetpack_connection_manager );
