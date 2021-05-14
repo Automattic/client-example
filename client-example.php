@@ -4,6 +4,7 @@ use Automattic\Jetpack\Config;
 use Automattic\Jetpack\Connection\Manager;
 use Automattic\Jetpack\Connection\Rest_Authentication as Connection_Rest_Authentication;
 use Automattic\Jetpack\Constants;
+use Automattic\Jetpack\Identity_Crisis;
 
 /**
  * The plugin bootstrap file
@@ -105,6 +106,8 @@ function run_client_example() {
 	);
 
 	$config->ensure( 'jitm' );
+	$config->ensure( 'sync' );
+	Identity_Crisis::init();
 
 	$jetpack_connection_manager = new Manager( CLIENT_EXAMPLE_SLUG );
 	$plugin = new Client_Example( $jetpack_connection_manager );

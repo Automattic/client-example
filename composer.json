@@ -14,8 +14,19 @@
 		"automattic/jetpack-autoloader": "@dev",
 		"automattic/jetpack-connection": "@dev",
 		"automattic/jetpack-constants": "@dev",
+		"automattic/jetpack-identity-crisis": "@dev",
 		"automattic/jetpack-jitm": "@dev",
+		"automattic/jetpack-sync": "@dev",
 		"automattic/jetpack-tracking": "@dev",
 		"automattic/jetpack-config": "@dev"
-    }
+    },
+	"repositories": [
+		{
+			"type": "path",
+			"url": "../../packages/*",
+			"options": {
+				"monorepo": true
+			}
+		}
+	]
 }
