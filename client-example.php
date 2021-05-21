@@ -109,6 +109,9 @@ function run_client_example() {
 	$jetpack_connection_manager = new Manager( CLIENT_EXAMPLE_SLUG );
 	$plugin = new Client_Example( $jetpack_connection_manager );
 
+	// Add the Connection Mananager UI.
+	Automattic\Jetpack\ConnectionUI\Admin::init();
+
 	add_filter( 'jetpack_pre_connection_jitms', 'add_preconnection_jitms' );
 
 	$plugin->run();

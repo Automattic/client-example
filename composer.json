@@ -13,6 +13,7 @@
     "require": {
 		"automattic/jetpack-autoloader": "@dev",
 		"automattic/jetpack-connection": "@dev",
+		"automattic/jetpack-connection-ui": "@dev",
 		"automattic/jetpack-constants": "@dev",
 		"automattic/jetpack-jitm": "@dev",
 		"automattic/jetpack-tracking": "@dev",
