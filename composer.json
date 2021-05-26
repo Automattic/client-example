@@ -16,6 +16,7 @@
 		"automattic/jetpack-connection-ui": "@dev",
 		"automattic/jetpack-constants": "@dev",
 		"automattic/jetpack-jitm": "@dev",
+		"automattic/jetpack-sync": "@dev",
 		"automattic/jetpack-tracking": "@dev",
 		"automattic/jetpack-config": "@dev"
     }

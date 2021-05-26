@@ -105,6 +105,7 @@ function run_client_example() {
 	);
 
 	$config->ensure( 'jitm' );
+	$config->ensure( 'sync' );
 
 	$jetpack_connection_manager = new Manager( CLIENT_EXAMPLE_SLUG );
 	$plugin = new Client_Example( $jetpack_connection_manager );
