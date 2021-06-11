@@ -31,6 +31,13 @@ Install the dependencies:
 $ composer install
 ```
 
+The Connection Manager UI assets need to be built. To do that, you need to run the following commands:
+
+```
+cd vendor/automattic/jetpack-connection-ui
+pnpm build
+```
+
 Now activate the plugin in wp-admin of your development site.
 
 You can then navigate to the "Client Example" menu item in wp-admin.
