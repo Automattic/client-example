@@ -95,12 +95,18 @@ function run_client_example() {
 	Constants::set_constant( 'JETPACK__WPCOM_JSON_API_BASE', 'https://public-api.wordpress.com' );
 	// Here we enable the Jetpack packages.
 	$config = new Config();
-	$config->ensure(
-		'connection',
+	$config->setup(
 		array(
-			'slug'     => CLIENT_EXAMPLE_SLUG,
-			'name'     => CLIENT_EXAMPLE_NAME,
-			'url_info' => 'https://github.com/Automattic/client-example'
+			'connection' => array(
+				'deactivate_disconnect' => true,
+				'tos_link'              => true,
+			)
+		),
+		array(
+			'slug'        => CLIENT_EXAMPLE_SLUG,
+			'name'        => CLIENT_EXAMPLE_NAME,
+			'url_info'    => 'https://github.com/Automattic/client-example',
+			'plugin_file' => __FILE__,
 		)
 	);
 
